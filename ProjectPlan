@@ -1,0 +1,57 @@
+#### TEAM MEMBERS ####
+Team Manager: <Matriculation Number> Teun Kokke
+Team Member: <Matriculation Number> Matthew Summers
+Team Member: <Matriculation Number> Michael Inglis
+Team Member: <Matriculation Number> Michelle Chu
+Team Member: <Matriculation Number> Fotis Papadogeorgopoulos
+
+
+
+#### PROJECT TITLE ####
+Turnbased Stratagy Game
+
+
+
+#### PROJECT DESCRIPTION ####
+Our "software" will be a game with a walking- and combat stage.
+The player starts off in a startpoint of a certain level map and has to move to the next level by walking into a door/stairs. there will hostile npc (monsters?) displayed on the map.
+When encountering these hostile npc, the game will go into a turn-based combat stage where the player has to defeat the opponent in order to proceed their way, and possibly gain a small reward.
+After a fight however, the players health will not reset, but remains how it was. This means that s/he has to strategically plan out the way to get there and think out the best method entering the next level. (health vs item rewards)
+
+Depending on the level of the map, the npc will be more tough and therefore the player has to gain plenty of equipment and skills on the way.
+There will be shops every x map levels where the player can buy health potions or possible equipment.
+
+If opponents become too strong the player has the option to return to the (previous-1) shop map, at the cost of all items being lost with exception for "special" items, money and stats.
+Death is permanent and the player will have to restart the game. Therefore being careful is a must, and planning ahead a real challenge.
+
+Additionally, during the game, the player will encounter certain riddles in order to maintain a story.
+The goal is for the player to reach the highest level map (an exact number will be given from start) and the player will be rewarded with the solution to the riddles.
+
+
+
+#### MINIMUM REQUIREMENTS ####
+general:
+- User Interface with player status, inventory ...
+- Menu screen with instructions/play/options etc.
+- ...
+
+movement map:
+- a map grid for the player to move through, and objects to be stored in
+- a map generator (possibly random generator) that creates the levels
+- ...
+
+combat stage:
+- combat/attack options
+- NPC that attack the player
+- ...
+
+
+
+#### ADDITIONAL FUNCTIONALITY ####
+- Improved graphics and animations
+- Sound/music
+- game-saving
+- extra items
+- inventory auto arrange button
+- particle systems
+- ...
