@@ -42,7 +42,7 @@ General
 -------
 - Menu screen with instructions/play/options etc.
 - Basic ASCII graphics
-- User Interface with player status...
+- User Interface displaying player status
 - Basic stats system (attack, defense etc.)
 - Hi-score system which tracks how well the player has done previously
 - Turn-based: The game state does not change until the player inputs an action. This means NPCs will not move, and other events will not trigger, until input is recieved
@@ -71,7 +71,8 @@ Combat Screen
 - Improved graphics and animations (2D)
 - Sound/music
 - Friendly NPCs (shops etc.)
-- inventory and items (includes convenience features such as auto-arrange button)
+- Inventory and items (includes convenience features such as auto-arrange button)
 - NvM battles (possibly including multiplayer?)
 - Player-chosen, flexible skills
+- Levelling system for stat increases?
 - Particle systems
