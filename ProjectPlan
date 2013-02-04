@@ -42,9 +42,9 @@ General
 -------
 - Menu screen with instructions/play/options etc.
 - Basic ASCII graphics
-- User Interface displaying player status
+- User Interface displaying player status (including either chatbox inside UID or pop-up)
 - Basic stats system (attack, defense etc.)
-- Hi-score system which tracks how well the player has done previously
+- Hi-score system which tracks how well the player has done previously (limitation: scores lost on game shutdown until adding game-save system?)
 - Turn-based: The game state does not change until the player inputs an action. This means NPCs will not move, and other events will not trigger, until input is recieved
 
 Map Screen
@@ -74,5 +74,5 @@ Combat Screen
 - Inventory and items (includes convenience features such as auto-arrange button)
 - NvM battles (possibly including multiplayer?)
 - Player-chosen, flexible skills
-- Levelling system for stat increases?
+- Leveling system for stat increases?
 - Particle systems
