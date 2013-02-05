@@ -1,5 +1,4 @@
 
-
 NOTE FOR NEW PROGRAMMERS:
 I can guarantee that it is boring when you're not into it, similarly for when reading books and such.
 Setting up and getting everyone at the same level right from start is therefore very important.
@@ -22,6 +21,8 @@ SETUP REQUIRED IN ORDER TO START PROGRAMMING:
 
 - Install and Implement libgdx in Eclipse -> http://libgdx.badlogicgames.com/
   note: this will help in setting up the game basics, i.e. setting up an interactive game window instead of working in terminal commands
+
+- ?any way to directly connect eclipse to github? Or do we have to copy-paste our updates every time? I doubt it!
 
 - Anything more?
 
