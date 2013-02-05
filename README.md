@@ -6,7 +6,7 @@ A Turn-based Strategy Game developed for Inf1 OOP Group Project
 Team Members
 -------------
 - [Michelle Chu](https://github.com/michellechu15)
-- [Michael Inglis]()
+- [Michael Inglis](https://github.com/mingles-)
 - [Teun Kokke](https://github.com/TeunK)
 - [Fotis Papadogeorgopoulos](https://github.com/fpapado)
 - [Matthew Summers](https://github.com/Wishf)
