@@ -6,7 +6,9 @@ public class Game {
 	
 	private Screen screen;
 	
-	public void run() {
+	public void run(Screen initialScreen) {
+		screen = initialScreen;
+		
 		/*
 		 *  This is temporary, probably shouldn't be using while(true)
 		 *  Also, need to implement a way of calculating the time
