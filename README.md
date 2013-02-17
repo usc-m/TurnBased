@@ -10,6 +10,7 @@ Team Members
 - [Teun Kokke](https://github.com/TeunK)
 - [Fotis Papadogeorgopoulos](https://github.com/fpapado)
 - [Matthew Summers](https://github.com/Wishf)
+- [Yannis Karamanlakis](https://github.com/Yannis14)
 
 Project Description
 -------------------
