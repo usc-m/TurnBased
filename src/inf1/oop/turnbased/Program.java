@@ -13,7 +13,8 @@ public class Program {
 		//game.run();
 		VisualDisplay disp = new ConsoleDisplay(16, 16);
 		disp.draw('#', new Point2D(8, 8));
-		disp.push();//.
+		disp.push();
+		//BLALALALA
 	}
 
 }
