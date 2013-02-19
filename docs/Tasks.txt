@@ -1,5 +1,4 @@
 
-
 =============================================
 ================ GROUP TASKS ================
 =============================================
@@ -9,32 +8,86 @@ Who is working on which part of the project and when we expect this to be finish
 More structured information about this will be set as milestones on github. 
 This way we know who to contact regarding questions about a certain script/topic.
 
+EDIT: Set out tasks for everyone to complete. 
+Change "INCOMPLETE" to "COMPLETE" when finished with the task so we can see how everyone is doing.
+
 Fotis Papadogeorgopoulos
 {
-	works on...
+	//SETUP
+	INCOMPLETE - Get Eclipse working
+	INCOMPLETE - Connect github repository using egit
+	INCOMPLETE - Import our github file
+	INCOMPLETE - Complement the gdx branch with the additional libgdx files
+	INCOMPLETE - CHECK: run the <main> class in Turnbased-desktop, new window with libgdx image opens?
+
+	//TASK
+
 }
 
 Matthew Summers
 {
-	works on...
+	//SETUP
+	COMPLETE - Get Eclipse working
+	COMPLETE - Connect github repository using egit
+	COMPLETE (extra) - Create skeleton and push to github
+	COMPLETE (extra) - Merge our project with libgdx
+	COMPLETE - Import our github file
+	COMPLETE - Complement the gdx branch with the additional libgdx files
+	COMPLETE - CHECK: run the <main> class in Turnbased-desktop, new window with libgdx image opens?
+
+	//TASK
+
 }
 
 Michael Inglis
 {
-	works on...
+	//SETUP
+	INCOMPLETE - Get Eclipse working
+	INCOMPLETE - Connect github repository using egit
+	INCOMPLETE - Import our github file
+	INCOMPLETE - Complement the gdx branch with the additional libgdx files
+	INCOMPLETE - CHECK: run the <main> class in Turnbased-desktop, new window with libgdx image opens?
+
+	//TASK
+
 }
 
 Michelle Chu
 {
-	works on...
+	//SETUP
+	INCOMPLETE - Get Eclipse working
+	INCOMPLETE - Connect github repository using egit
+	INCOMPLETE - Import our github file
+	INCOMPLETE - Complement the gdx branch with the additional libgdx files
+	INCOMPLETE - CHECK: run the <main> class in Turnbased-desktop, new window with libgdx image opens?
+
+	//TASK
+
 }
 
 Teun Kokke
 {
-	works on...
+	//SETUP
+	COMPLETE - Get Eclipse working
+	COMPLETE - Connect github repository using egit
+	COMPLETE - Import our github file
+	COMPLETE - Complement the gdx branch with the additional libgdx files
+	COMPLETE - CHECK: run the <main> class in Turnbased-desktop, new window with libgdx image opens?
+
+	//TASK
+	COMPLETE - Create prototype to get a rough idea what our plan is for the grid/player movement system
+		 - Try Out: rendonan.com/edinburgh/TBprototype.exe
 }
 
 Yannis Karamanlakis
 {
-	works on...
+	//SETUP
+	INCOMPLETE - Get Eclipse working
+	INCOMPLETE - Connect github repository using egit
+	INCOMPLETE - Import our github file
+	INCOMPLETE - Complement the gdx branch with the additional libgdx files
+	INCOMPLETE - CHECK: run the <main> class in Turnbased-desktop, new window with libgdx image opens?
+
+	//TASK
+
 }
