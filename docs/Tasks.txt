@@ -1,4 +1,3 @@
-
 =============================================
 ================ GROUP TASKS ================
 =============================================
@@ -14,10 +13,10 @@ Change "INCOMPLETE" to "COMPLETE" when finished with the task so we can see how 
 Fotis Papadogeorgopoulos
 {
 	//SETUP
-	INCOMPLETE - Get Eclipse working
-	INCOMPLETE - Connect github repository using egit
-	INCOMPLETE - Import our github file
-	INCOMPLETE - Complement the gdx branch with the additional libgdx files
+	COMPLETE - Get Eclipse working
+	COMPLETE - Connect github repository using egit
+	COMPLETE - Import our github file
+	COMPLETE - Complement the gdx branch with the additional libgdx files
 	INCOMPLETE - CHECK: run the <main> class in Turnbased-desktop, new window with libgdx image opens?
 
 	//TASK
