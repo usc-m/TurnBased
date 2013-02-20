@@ -54,11 +54,11 @@ Michael Inglis
 Michelle Chu
 {
 	//SETUP
-	INCOMPLETE - Get Eclipse working
-	INCOMPLETE - Connect github repository using egit
-	INCOMPLETE - Import our github file
-	INCOMPLETE - Complement the gdx branch with the additional libgdx files
-	INCOMPLETE - CHECK: run the <main> class in Turnbased-desktop, new window with libgdx image opens?
+	COMPLETE - Get Eclipse working
+	COMPLETE - Connect github repository using egit
+	COMPLETE - Import our github file
+	COMPLETE - Complement the gdx branch with the additional libgdx files
+	COMPLETE - CHECK: run the <main> class in Turnbased-desktop, new window with libgdx image opens?
 
 	//TASK
 
