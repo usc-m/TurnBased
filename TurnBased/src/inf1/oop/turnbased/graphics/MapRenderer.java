@@ -1,5 +1,6 @@
 package inf1.oop.turnbased.graphics;
 
+import inf1.oop.turnbased.ServiceProvider;
 import inf1.oop.turnbased.map.Map;
 import inf1.oop.turnbased.map.Tile;
 
@@ -8,18 +9,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MapRenderer {
-	// TODO: Refactor this so services like this are centrally managed instead of being passed one by one in constructor
 	AssetManager assets;
+	SpriteBatch batch;
 	
 	Map currentMap;
 	
-	public MapRenderer(AssetManager asst) {
-		assets = asst;
+	public MapRenderer(ServiceProvider services) {
+		assets = services.get(AssetManager.class);
+		batch = services.get(SpriteBatch.class);
 	}
 	
 	public void setMap(Map newMap) { currentMap = newMap; }
 	
-	public void draw(SpriteBatch batch, float xOffset, float yOffset) {
+	public void draw(float xOffset, float yOffset) {
 		if(currentMap == null) throw new NullPointerException();
 		
 		int w = currentMap.getTileWidth();

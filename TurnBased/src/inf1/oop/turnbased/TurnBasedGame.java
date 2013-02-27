@@ -23,6 +23,7 @@ public class TurnBasedGame implements ApplicationListener {
 	private MapRenderer mapRenderer;
 	private Map map;
 	private AssetManager assets;
+	private ServiceProvider services;
 	private float xO, yO;
 	
 	@Override
@@ -36,17 +37,18 @@ public class TurnBasedGame implements ApplicationListener {
 		camera = new OrthographicCamera(w,h);
 		batch = new SpriteBatch();
 		
-		assets = new AssetManager();
-		assets.load("assets/data/tile.png", Texture.class);
+		services = new ServiceProvider();
+		services.set(batch, SpriteBatch.class);
 		
+		assets = new AssetManager();
+		services.set(assets, AssetManager.class);
+		assets.load("assets/data/tile.png", Texture.class);		
 		assets.finishLoading();
 		
-		map = new Map(5, 5, 16, 16);
-		
+		map = new Map(5, 5, 16, 16);		
 		map.setTile(2, 2, new Tile("assets/data/tile.png"));
 		
-		mapRenderer = new MapRenderer(assets);
-		
+		mapRenderer = new MapRenderer(services);
 		mapRenderer.setMap(map);
 	}
 
@@ -63,7 +65,7 @@ public class TurnBasedGame implements ApplicationListener {
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		mapRenderer.draw(batch, xO, yO);
+		mapRenderer.draw(xO, yO);
 		batch.end();
 	}
 
