@@ -1,8 +1,13 @@
 package inf1.oop.turnbased;
 
+import inf1.oop.turnbased.graphics.MapRenderer;
+import inf1.oop.turnbased.map.Map;
+import inf1.oop.turnbased.map.Tile;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,32 +19,41 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class TurnBasedGame implements ApplicationListener {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
-	private Texture texture;
-	private Sprite sprite;
+	
+	private MapRenderer mapRenderer;
+	private Map map;
+	private AssetManager assets;
+	private float xO, yO;
 	
 	@Override
 	public void create() {		
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		camera = new OrthographicCamera(1, h/w);
+		xO = -w/2;
+		yO = -h/2;
+		
+		camera = new OrthographicCamera(w,h);
 		batch = new SpriteBatch();
 		
-		texture = new Texture(Gdx.files.internal("assets/data/libgdx.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		assets = new AssetManager();
+		assets.load("assets/data/tile.png", Texture.class);
 		
-		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
+		assets.finishLoading();
 		
-		sprite = new Sprite(region);
-		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
+		map = new Map(5, 5, 16, 16);
+		
+		map.setTile(2, 2, new Tile("assets/data/tile.png"));
+		
+		mapRenderer = new MapRenderer(assets);
+		
+		mapRenderer.setMap(map);
 	}
 
 	@Override
 	public void dispose() {
 		batch.dispose();
-		texture.dispose();
+		assets.dispose();
 	}
 
 	@Override
@@ -49,7 +63,7 @@ public class TurnBasedGame implements ApplicationListener {
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		sprite.draw(batch);
+		mapRenderer.draw(batch, xO, yO);
 		batch.end();
 	}
 
