@@ -5,6 +5,7 @@ package inf1.oop.turnbased.map;
  * things that appear on the map and operations that apply to maps, such as 
  */
 public class Map {
+    //test comment, will work on this -F
 	Tile[][] tileGrid;
 	int width;
 	int height;
