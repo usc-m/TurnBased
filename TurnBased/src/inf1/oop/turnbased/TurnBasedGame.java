@@ -1,20 +1,17 @@
 package inf1.oop.turnbased;
 
 import inf1.oop.turnbased.graphics.MapRenderer;
+import inf1.oop.turnbased.graphics.RenderingParameters;
 import inf1.oop.turnbased.map.Map;
 import inf1.oop.turnbased.map.Tile;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class TurnBasedGame implements ApplicationListener {
 	private OrthographicCamera camera;
@@ -24,21 +21,21 @@ public class TurnBasedGame implements ApplicationListener {
 	private Map map;
 	private AssetManager assets;
 	private ServiceProvider services;
-	private float xO, yO;
+	private RenderingParameters renderParams;
 	
 	@Override
 	public void create() {		
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		xO = -w/2;
-		yO = -h/2;
-		
 		camera = new OrthographicCamera(w,h);
 		batch = new SpriteBatch();
 		
 		services = new ServiceProvider();
 		services.set(batch, SpriteBatch.class);
+		
+		renderParams = new RenderingParameters().setXOffset(-w/2).setYOffset(-h/2);
+		services.set(renderParams, RenderingParameters.class);
 		
 		assets = new AssetManager();
 		services.set(assets, AssetManager.class);
@@ -65,7 +62,7 @@ public class TurnBasedGame implements ApplicationListener {
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		mapRenderer.draw(xO, yO);
+		mapRenderer.draw();
 		batch.end();
 	}
 

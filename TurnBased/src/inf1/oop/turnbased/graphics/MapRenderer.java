@@ -11,21 +11,26 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class MapRenderer {
 	AssetManager assets;
 	SpriteBatch batch;
+	RenderingParameters renderParams;
 	
 	Map currentMap;
 	
 	public MapRenderer(ServiceProvider services) {
 		assets = services.get(AssetManager.class);
 		batch = services.get(SpriteBatch.class);
+		renderParams = services.get(RenderingParameters.class);
 	}
 	
 	public void setMap(Map newMap) { currentMap = newMap; }
 	
-	public void draw(float xOffset, float yOffset) {
+	public void draw(float xShift, float yShift) {
 		if(currentMap == null) throw new NullPointerException();
 		
 		int w = currentMap.getTileWidth();
 		int h = currentMap.getTileHeight();
+		
+		float xOffset = renderParams.getXOffset() + xShift;
+		float yOffset = renderParams.getYOffset() + yShift;
 		
 		for(int x = 0; x < currentMap.getWidth(); x++) {
 			for(int y = 0; y < currentMap.getHeight(); y++) {
@@ -37,4 +42,6 @@ public class MapRenderer {
 			}
 		}
 	}
+	
+	public void draw() { draw(0,0); }
 }
