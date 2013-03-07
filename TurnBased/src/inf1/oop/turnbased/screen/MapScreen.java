@@ -79,10 +79,50 @@ public class MapScreen extends Screen {
 		
 		//PLAYER MOVEMENT USING ARROW KEYS
 		//ERROR: code does not update/trigger on key press, tested this with the System.out.println.
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {player_x -= 1; System.out.println("player_x: "+player_x);} //take away the println parts when working.
-		else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {player_x += 1; System.out.println("player_x: "+player_x);}
-		else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {player_y += 1; System.out.println("player_y: "+player_y);}
-		else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {player_y -= 1; System.out.println("player_y: "+player_y);}
+		
+		//moving left
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) 
+		{
+			map.setTile(player_x, player_y, new Tile("assets/data/spr_EmptySquare.png"));
+			if (margin_left+player_x > 0)
+			{
+				player_x -= 1; 
+				System.out.println("player_x: "+player_x);
+			}
+		} //take away the println parts when working.
+		
+		//moving right
+		else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) 
+		{
+			map.setTile(player_x, player_y, new Tile("assets/data/spr_EmptySquare.png"));
+			if (margin_left+player_x+1 < map_width)
+			{
+				player_x += 1; 
+				System.out.println("player_x: "+player_x);
+			}
+		}
+		
+		//moving up
+		else if (Gdx.input.isKeyPressed(Input.Keys.UP)) 
+		{
+			map.setTile(player_x, player_y, new Tile("assets/data/spr_EmptySquare.png"));
+			if (margin_bottom+player_y+1 < map_height)
+			{
+				player_y += 1; 
+				System.out.println("player_y: "+player_y);
+			}
+		}
+		
+		//moving down
+		else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) 
+		{
+			map.setTile(player_x, player_y, new Tile("assets/data/spr_EmptySquare.png"));
+			if (margin_bottom+player_y > 0)
+			{
+				player_y -= 1; 
+				System.out.println("player_y: "+player_y);
+			}
+		}
 		
 		// :: DRAW PLAYER ::
 		//IMPORTANT -> margin_bottom and margin_left must come from the map-drawing code above.
