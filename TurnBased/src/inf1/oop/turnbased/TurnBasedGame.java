@@ -4,6 +4,8 @@ import inf1.oop.turnbased.graphics.MapRenderer;
 import inf1.oop.turnbased.graphics.RenderingParameters;
 import inf1.oop.turnbased.map.Map;
 import inf1.oop.turnbased.map.Tile;
+import inf1.oop.turnbased.screen.MapScreen;
+import inf1.oop.turnbased.screen.Screen;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -23,6 +25,8 @@ public class TurnBasedGame implements ApplicationListener {
 	private AssetManager assets;
 	private ServiceProvider services;
 	private RenderingParameters renderParams;
+	
+	private Screen currentScreen; // TODO: Make a proper screen manager so we don't have to handle that in the main class
 	
 	@Override
 	public void create() {		
@@ -50,64 +54,8 @@ public class TurnBasedGame implements ApplicationListener {
 		//map = new Map(5, 5, 16, 16); //<-- what do the 5's mean?
 		//map.setTile(2, 2, new Tile("assets/data/tile.png"));
 		
+		currentScreen = new MapScreen(services);
 		
-		
-		
-		//------------------------------------------------------
-		/* #################################################### *
-		 * DRAW MAP, put this as method in external class later *
-		 * #################################################### */
-		
-
-		//VARIABLES, load these from a .json file later on?
-		int margin_bottom=0; //distance starting to draw grid, number is index?
-		int margin_left=0; //same from left, number is index?
-		int map_height=10; //map slots
-		int map_width=10; //map slots
-		int grid_size=16; //pixels
-		
-		//DRAW GRID :: logic error on margin_left and margin_bottom, try to puzzle it out
-		map = new Map(map_height+margin_bottom,map_width+margin_left, grid_size, grid_size); //<-- what do the 5's mean?
-		for (int width=0; width<map_width; width+=1)
-		{
-			for (int height=0; height<map_height; height+=1)
-			{
-				map.setTile(margin_bottom+width, margin_left+height, new Tile("assets/data/spr_EmptySquare.png"));
-			}
-		}
-		//------------------------------------------------------
-		
-		
-		
-		
-		//------------------------------------------------------
-		/* ####################################################### *
-		 * DRAW PLAYER, put this as method in external class later * <-- and then run in the render method instead of create (create only runs ONCE, at game start)
-		 * ####################################################### */
-		
-		//VARIABLES
-		int player_x=0; //x-position of player (number is the grid index, so NOT in pixels)
-		int player_y=0; //y-position of player (number is the grid index, so NOT in pixels)
-		
-		//PLAYER MOVEMENT USING ARROW KEYS
-		//ERROR: code does not update/trigger on key press, tested this with the System.out.println.
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {player_x -= 1; System.out.println("player_x: "+player_x);} //take away the println parts when working.
-		else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {player_x += 1; System.out.println("player_x: "+player_x);}
-		else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {player_y += 1; System.out.println("player_y: "+player_y);}
-		else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {player_y -= 1; System.out.println("player_y: "+player_y);}
-		
-		// :: DRAW PLAYER ::
-		//IMPORTANT -> margin_bottom and margin_left must come from the map-drawing code above.
-		//do not make separate variables with the same definition, important when putting these blocks in external classes.
-		//ie. load from the same .json file as from the "DRAW MAP" block above
-		map.setTile(margin_bottom+player_x, margin_left+player_y, new Tile("assets/data/spr_Player.png"));
-		//------------------------------------------------------
-		
-		
-		
-		
-		mapRenderer = new MapRenderer(services);
-		mapRenderer.setMap(map);
 	}
 
 	@Override
@@ -117,14 +65,10 @@ public class TurnBasedGame implements ApplicationListener {
 	}
 
 	@Override
-	public void render() {				
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		mapRenderer.draw();
-		batch.end();
+	public void render() {
+		float dt = Gdx.graphics.getDeltaTime(); // this is the number of seconds since last frame (so a value of 1 would be 1 second, but 0.5 would be 500 milliseconds)
+		currentScreen.update(dt);
+		currentScreen.draw(dt);
 	}
 
 	@Override
