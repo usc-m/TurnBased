@@ -1,6 +1,7 @@
 package inf1.oop.turnbased.screen;
 
 import inf1.oop.turnbased.ServiceProvider;
+import inf1.oop.turnbased.entity.Entity;
 import inf1.oop.turnbased.graphics.MapRenderer;
 import inf1.oop.turnbased.map.Map;
 import inf1.oop.turnbased.map.Tile;
@@ -41,6 +42,8 @@ public class MapScreen extends Screen {
 	//VARIABLES
 	int player_x=0; //x-position of player (number is the grid index, so NOT in pixels)
 	int player_y=0; //y-position of player (number is the grid index, so NOT in pixels)
+		
+	
 	
 	public MapScreen(ServiceProvider services) {
 		this.services = services;
