@@ -9,7 +9,10 @@ This way we know who to contact regarding questions about a certain script/topic
 
 Fotis Papadogeorgopoulos
 {
-	works on...
+	works on: Map system: -Generation of map
+			      -Generation of enemies(+objects)
+			      -Collision detection(enemy+environment)
+			      -Level(as in stage) advancement
 }
 
 Matthew Summers
