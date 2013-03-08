@@ -18,6 +18,7 @@
  * getName() returns name
  * setName(name) sets name
  * getDamage() returns damage
+ * attack() get attack, returns damage with a randomised equation and depending on weapon held.
  * setDamage(dmg) returns damage
  * getHealth() returns health
  * setHealth(health) sets health to new health, limits health to max-health if it exceeds the total.
@@ -30,7 +31,7 @@
 package inf1.oop.turnbased.entity;
 
 public class Entity {
-	private int x, y, totalhealth, ownhealth, damage, movespeed; //HIGH PRIORITY
+	private int x, y, totalhealth, ownhealth, damage, movespeed, weapon; //HIGH PRIORITY
 	//int money, stamina, attackspeed, level, experience, weapondamage, armor;//LOWER PRIORITY
 	private String name;
 	private Entity temp = new Entity(x,y,name,damage,movespeed, totalhealth);
@@ -46,6 +47,7 @@ public class Entity {
 		this.movespeed = movespeed;
 		this.totalhealth = totalhealth;
 		this.ownhealth = totalhealth;
+		this.weapon = 0;
 	}
 	
 	//get entity object
@@ -100,6 +102,12 @@ public class Entity {
 	public void setDamage(int damage)
 	{
 		this.damage = damage;
+	}
+	
+	//get attack, outputs damage with a randomized equation and depending on weapon held.
+	public int attack()
+	{
+		return (int) Math.round(damage*(1+0.6*weapon) + (0.3*damage+0.5*(1+weapon))*Math.random());
 	}
 	
 	//get entity health
