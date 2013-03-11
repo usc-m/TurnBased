@@ -44,7 +44,7 @@ public class MapScreen extends Screen {
 		batch = services.get(SpriteBatch.class);
 		
 		//DRAW GRID :: logic error on margin_left and margin_bottom, try to puzzle it out
-		map = new Map(map_height+margin_bottom,map_width+margin_left, grid_size, grid_size); //<-- what do the 5's mean?
+		map = new Map(map_height,map_width, grid_size, grid_size); //<-- what do the 5's mean?
 		for (int width=0; width<map_width; width+=1)
 		{
 			for (int height=0; height<map_height; height+=1)
@@ -65,7 +65,7 @@ public class MapScreen extends Screen {
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		renderer.draw();
+		renderer.draw(margin_bottom, margin_left);
 		batch.end();
 		
 	}
@@ -88,7 +88,7 @@ public class MapScreen extends Screen {
 		//IMPORTANT -> margin_bottom and margin_left must come from the map-drawing code above.
 		//do not make separate variables with the same definition, important when putting these blocks in external classes.
 		//ie. load from the same .json file as from the "DRAW MAP" block above
-		map.setTile(margin_bottom+player_x, margin_left+player_y, new Tile("assets/data/spr_Player.png"));
+		map.setTile(player_x, player_y, new Tile("assets/data/spr_Player.png"));
 		//------------------------------------------------------
 		
 		

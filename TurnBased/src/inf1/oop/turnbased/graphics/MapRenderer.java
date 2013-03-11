@@ -23,6 +23,8 @@ public class MapRenderer {
 	
 	public void setMap(Map newMap) { currentMap = newMap; }
 	
+	// xShift = How far along the x axis to start drawing
+	// yShift = Same for y axis
 	public void draw(float xShift, float yShift) {
 		if(currentMap == null) throw new NullPointerException();
 		
