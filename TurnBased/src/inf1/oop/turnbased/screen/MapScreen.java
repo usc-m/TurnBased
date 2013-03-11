@@ -1,6 +1,7 @@
 package inf1.oop.turnbased.screen;
 
 import inf1.oop.turnbased.ServiceProvider;
+//import inf1.oop.turnbased.entity.Entity;
 import inf1.oop.turnbased.graphics.MapRenderer;
 import inf1.oop.turnbased.map.Map;
 import inf1.oop.turnbased.map.Tile;
@@ -21,16 +22,30 @@ public class MapScreen extends Screen {
 	
 	Map map;
 
+	//PLAYER INITIAL VARIABLES
+	//limits player's movement, will only be able to walk 1 grid per 30 times the code is checked. (see player movement script beneath)
+	int player_walktimertotal=30;
+	int player_walktimer=player_walktimertotal;
+	
+	
 	//VARIABLES, load these from a .json file later on?
-	int margin_bottom=0; //distance starting to draw grid, number is index?
-	int margin_left=0; //same from left, number is index?
-	int map_height=10; //map slots
-	int map_width=10; //map slots
+	int map_height=20; //map slots
+	int map_width=20; //map slots
 	int grid_size=16; //pixels
+	int map_pixelheight=map_height*grid_size; //map total height in pixels
+	int map_pixelwidth=map_width*grid_size; //map total width in pixels
+	int map_centerx=Gdx.graphics.getWidth()/2; //center of screen on x-axis
+	int map_centery=Gdx.graphics.getHeight()/2; //center of screen on y-axis
 	
 	//VARIABLES
 	int player_x=0; //x-position of player (number is the grid index, so NOT in pixels)
 	int player_y=0; //y-position of player (number is the grid index, so NOT in pixels)
+	
+
+	//Entity obj_Player = new Entity(5,5,"player",10,4,100);
+	//obj_Player.setY(2);
+
+	
 	
 	public MapScreen(ServiceProvider services) {
 		this.services = services;
@@ -49,7 +64,7 @@ public class MapScreen extends Screen {
 		{
 			for (int height=0; height<map_height; height+=1)
 			{
-				map.setTile(margin_bottom+width, margin_left+height, new Tile("assets/data/spr_EmptySquare.png"));
+				map.setTile(width, height, new Tile("assets/data/spr_EmptySquare.png"));
 			}
 		}
 		//------------------------------------------------------
@@ -65,8 +80,10 @@ public class MapScreen extends Screen {
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		renderer.draw(margin_bottom, margin_left);
+		renderer.draw(map_centerx-(map_pixelwidth/2),0); //map draw margins, precisely centered on x-axis, 0 margin on y
 		batch.end();
+		
+		
 		
 	}
 
@@ -79,10 +96,59 @@ public class MapScreen extends Screen {
 		
 		//PLAYER MOVEMENT USING ARROW KEYS
 		//ERROR: code does not update/trigger on key press, tested this with the System.out.println.
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {player_x -= 1; System.out.println("player_x: "+player_x);} //take away the println parts when working.
-		else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {player_x += 1; System.out.println("player_x: "+player_x);}
-		else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {player_y += 1; System.out.println("player_y: "+player_y);}
-		else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {player_y -= 1; System.out.println("player_y: "+player_y);}
+		
+		player_walktimer-=1;
+		
+		if (player_walktimer <= 0)
+		{
+			//moving left
+			if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) 
+			{
+				map.setTile(player_x, player_y, new Tile("assets/data/spr_EmptySquare.png"));
+				if (player_x > 0)
+				{
+					player_x -= 1; 
+					System.out.println("player_x: "+player_x);
+					player_walktimer=player_walktimertotal;
+				}
+			} //take away the println parts when working.
+			
+			//moving right
+			else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) 
+			{
+				map.setTile(player_x, player_y, new Tile("assets/data/spr_EmptySquare.png"));
+				if (player_x+1 < map_width)
+				{
+					player_x += 1; 
+					System.out.println("player_x: "+player_x);
+					player_walktimer=player_walktimertotal;
+				}
+			}
+			
+			//moving up
+			else if (Gdx.input.isKeyPressed(Input.Keys.UP)) 
+			{
+				map.setTile(player_x, player_y, new Tile("assets/data/spr_EmptySquare.png"));
+				if (player_y+1 < map_height)
+				{
+					player_y += 1; 
+					System.out.println("player_y: "+player_y);
+					player_walktimer=player_walktimertotal;
+				}
+			}
+			
+			//moving down
+			else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) 
+			{
+				map.setTile(player_x, player_y, new Tile("assets/data/spr_EmptySquare.png"));
+				if (player_y > 0)
+				{
+					player_y -= 1; 
+					System.out.println("player_y: "+player_y);
+					player_walktimer=player_walktimertotal;
+				}
+			}
+		}
 		
 		// :: DRAW PLAYER ::
 		//IMPORTANT -> margin_bottom and margin_left must come from the map-drawing code above.

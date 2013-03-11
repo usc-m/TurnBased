@@ -7,6 +7,61 @@ Who is working on which part of the project and when we expect this to be finish
 More structured information about this will be set as milestones on github. 
 This way we know who to contact regarding questions about a certain script/topic.
 
+Fotis Papadogeorgopoulos
+{
+	works on: Map system: -Generation of map
+			      -Generation of enemies(+objects)
+			      -Collision detection(enemy+environment)
+			      -Level(as in stage) advancement
+}
+
+Matthew Summers
+{
+	works on: Combat System
+		- Combat Entities
+		- Attacks and combat interactions
+		- Battle options
+}
+
+Michael Inglis
+{
+	works on...
+}
+
+Michelle Chu
+{
+	works on...
+}
+
+Teun Kokke
+{
+	works on...
+	The entity class, (currently the map entities)
+	Including code for entity/object creation, storing their variables and ability to set and access these from different classes.
+}
+
+Yannis Karamanlakis
+{
+	works on...
+}
+
+
+
+
+
+
+
+
+===========================================
+================ OLD TASKS ================
+===========================================
+
+
+Our tasks will be found here. 
+Who is working on which part of the project and when we expect this to be finished.
+More structured information about this will be set as milestones on github. 
+This way we know who to contact regarding questions about a certain script/topic.
+
 EDIT: Set out tasks for everyone to complete. 
 Change "INCOMPLETE" to "COMPLETE" when finished with the task so we can see how everyone is doing.
 
@@ -91,43 +146,3 @@ Yannis Karamanlakis
 
 }
 =======
-
-
-=============================================
-================ GROUP TASKS ================
-=============================================
-
-Our tasks will be found here. 
-Who is working on which part of the project and when we expect this to be finished.
-More structured information about this will be set as milestones on github. 
-This way we know who to contact regarding questions about a certain script/topic.
-
-Fotis Papadogeorgopoulos
-{
-	works on...
-}
-
-Matthew Summers
-{
-	works on...
-}
-
-Michael Inglis
-{
-	works on...
-}
-
-Michelle Chu
-{
-	works on...
-}
-
-Teun Kokke
-{
-	works on...
-}
-
-Yannis Karamanlakis
-{
-	works on...
-}

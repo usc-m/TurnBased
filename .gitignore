@@ -4,3 +4,9 @@
 *.jar
 *.war
 *.ear
+.DS_Store
+TurnBased-desktop/.DS_Store
+TurnBased-desktop/libs/
+TurnBased/.DS_Store
+TurnBased/libs/
+docs/.DS_Store
