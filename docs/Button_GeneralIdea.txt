@@ -1,0 +1,112 @@
+For Michelle who is currently working on the buttons, I have written a quick and simple version of how to make buttons..
+It is written in GML so you will have to translate the functions, but it should be easy to understand just from reading what you will need to do.
+
+Generally, in our code.. all we want to have to do is write the following code in order to have a button:
+
+if button_pressed(20,20,"press me!",c_black,c_white)
+{
+  //code that triggers when the button is pressed
+    show_message("I've been pressed! :D");
+}
+
+This means that you will have to make a class that does all the background work to check and draw the button.
+The class would be called something similar to button_pressed, with similar arguments as well.
+(I suppose buttonPressed() wouldbe a more java-like style)
+arguments are those values between the brackets btw, button_pressed(argument0,arg1,arg2...etc)
+
+so for this class, the content will look smilar to the following:
+///////////////////////////////////////////////////////////////////
+///////////////////-- CLASS BUTTON_PRESSED --//////////////////////
+///////////////////////////////////////////////////////////////////
+
+//Example of class button_pressed:
+//button_pressed(20,20,"press me!",c_black,c_white);
+
+//INPUT INDEX
+//argument0 = x
+//argument1 = y
+//argument2 = text inside button
+//argument3 = color of the button
+//argument4 = color of the text inside the button
+
+//MAKE THE CODE EASIER TO READ BY DEFINING ARGUMENTS AND CALCULATING STUFFS
+padding = 4; //spacing inside the box so the text wont lie directly onto its edges
+btncol = argument3;
+txtcol = argument4;
+x0 = argument0;
+y0 = argument1;
+x1 = argument0 + padding + string_width(argument2);
+y1 = argument1 + padding + string_height(argument2);
+txtx = argument0 + (padding/2);
+txty = argument1 + (padding/2);
+text = argument2;
+offset = 2; //moves box slightly when hovered upon
+
+
+
+//DRAW THE THINGY
+//if the mouse enters the area between these coordinates
+if mouse_enter(x0,y0,x1,y1)
+{
+    //draw_set_color(color) <-- items drawn after this line will be drawn in the given color
+    draw_set_color(btncol);
+    
+    //draw_rectangle(x0,y0,x1,y1,outline) <-- outline means if the button is filled or if only the outline is visible
+    draw_rectangle(x0+offset,y0+offset,x1+offset,y1+offset,0); //draws rectangle slightly down-right when hovering on top with the mouse (indicates interactability)
+    
+    //draw_set_color(color) <-- items drawn after this line will be drawn in the given color
+    draw_set_color(txtcol);
+    
+    //draw_text(x,y,string) <-- draws text at x,y positions with string being the text
+    draw_text(txtx+offset, txty+offset, text);
+    
+    //if you press the mouse button
+    if mouse_check_button_pressed(mb_left) //mb_left = left mousebutton
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+else
+{
+    draw_set_color(btncol);
+    draw_rectangle(x0,y0,x1,y1,0)
+    draw_set_color(txtcol);
+    draw_text(txtx, txty, text);
+    return false;
+}
+
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+Note that many of these functions are not recognised by java, but I'm pretty sure most of them are simply called
+differently in libgdx. It should have most of these functions included also.
+
+However for some, such as mouse_enter(x0,y0,x1,y1), you will probably have to create your own method/class for this
+which returns true if the mouse enters this given rectangle (made out of the coordinates).
+
+A version in GML looks like this:
+
+///////////////////////////////////////////////////////////////////
+/////////////////////-- CLASS MOUSE_ENTER --///////////////////////
+///////////////////////////////////////////////////////////////////
+//arg0 = x0
+//arg1 = y0
+//arg2 = x1
+//arg3 = y1
+
+//simple test if the mouse is inside the given coordinates
+if mouse_x > argument0 && mouse_x < argument2 && mouse_y > argument1 && mouse_y < argument3
+{
+    return true;
+}
+else
+{
+    return false;
+}
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+
+I have commented everything out so it should be easy from here just to find the right translations into a working file.
