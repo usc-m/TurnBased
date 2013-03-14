@@ -2,6 +2,7 @@ package inf1.oop.turnbased.screen;
 
 import inf1.oop.turnbased.ServiceProvider;
 import inf1.oop.turnbased.graphics.MapRenderer;
+import inf1.oop.turnbased.graphics.RenderingParameters;
 import inf1.oop.turnbased.map.Map;
 import inf1.oop.turnbased.map.Tile;
 
@@ -32,20 +33,23 @@ public class MapScreen extends Screen {
 	
 	
 	//VARIABLES, load these from a .json file later on?
-	int margin_bottom=0;//distance starting to draw grid, number is index?
-	int margin_left=0; 	//same from left, number is index?
-	int map_height=20;	//map height in tiles
-	int map_width=20; 	//map width in tiles
-	int grid_size=16; 	//tile size in px
-	int map_pixelheight=map_height*grid_size; 	 //map total height in pixels
-	int map_pixelwidth=map_width*grid_size; 	 //map total width in pixels
-	int map_centerx=Gdx.graphics.getWidth()/2;	 //center of screen on x-axis
-	int map_centery=Gdx.graphics.getHeight()/2;	 //center of screen on y-axis
+	int map_height=20;							//map height in tiles
+	int map_width=20; 							//map width in tiles
+	int tile_size=16; 							//tile size in px
+	int map_pixelheight=map_height*tile_size; 	//map height in pixels
+	int map_pixelwidth=map_width*tile_size; 	//map width in pixels
 	
 	//Player Data
-	int player_x=0; //player x-position in px
-	int player_y=0; //yplayer y-position in px
-	Texture playerS;
+	int player_x=0; 	//player x-position in px
+	int player_y=0; 	//yplayer y-position in px
+	Texture playerS;	//player sprite
+	
+	//global rendering parameters
+	RenderingParameters renderParams;
+	
+	//x,y to draw map at
+	float xShift = 240;
+	float yShift = 0;
 	
 	public MapScreen(ServiceProvider services) {
 		assets = services.get(AssetManager.class);
@@ -53,20 +57,20 @@ public class MapScreen extends Screen {
 		
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
+		renderParams = services.get(RenderingParameters.class);
 		
 		camera = new OrthographicCamera(w,h);
 		
 		renderer = new MapRenderer(services);
 		batch = services.get(SpriteBatch.class);
 		
-		//DRAW GRID :: logic error on margin_left and margin_bottom, try to puzzle it out
-		map = new Map(map_height+margin_bottom,map_width+margin_left, grid_size, grid_size);
-		for (int width=0; width<map_width; width+=1)
+		map = new Map(map_height,map_width, tile_size, tile_size);
+		for (int x=0; x<map_width; x+=1)
 		{
-			for (int height=0; height<map_height; height+=1)
+			for (int y=0; y<map_height; y+=1)
 			{
 				//will be subbed with generate map method, suggest removing(i.e. integrating in tile class) the pathing
-				map.setTile(margin_bottom+width, margin_left+height, new Tile("assets/data/spr_EmptySquare.png"));
+				map.setTile(x, y, new Tile("assets/data/spr_EmptySquare.png"));
 			}
 		}
 		//------------------------------------------------------
@@ -77,19 +81,25 @@ public class MapScreen extends Screen {
 	
 	@Override
 	public void draw(float dt) {
+		//bring coordinates for player bottom-lef, like in the map renderer
+		float xOffset = renderParams.getXOffset() + xShift;
+		float yOffset = renderParams.getYOffset() + yShift;
+		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		renderer.draw(map_centerx-(map_pixelwidth/2),0); //map draw margins, centered on x-axis, 0 margin on y
-	    batch.draw(playerS, player_x, player_y);
+		renderer.draw(xShift,yShift);
+	    batch.draw(playerS, xOffset + player_x, yOffset  + player_y);
 	    batch.end();
 		
 		
 		
 	}
 
+	//NOTE: I am not offseting player_x, y itself in order to make the processing of the array less of a hassle -F
+	
 	@Override
 	public void update(float dt) {
 		//------------------------------------------------------
@@ -102,7 +112,7 @@ public class MapScreen extends Screen {
 		//moving left
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) 
 		{
-			if (player_x > 0 - map.getWidth()*map.getTileHeight()/2 ) //sub 16 with tilesize passed form class above -F
+			if (player_x + xShift > xShift)
 			{
 				player_x -= 1; 	//consider using delta and f values -F
 				System.out.println("player_x: "+player_x);
@@ -113,7 +123,7 @@ public class MapScreen extends Screen {
 		//moving right
 		else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) 
 		{
-			if (player_x +16 < 0 + map.getWidth()*map.getTileHeight()/2) //there is a +16 adjustment to playerX since detection point is bottom left
+			if (player_x + 16 + xShift < xShift + map_pixelwidth) //there is a +16 adjustment to playerX since detection point is bottom left
 			{
 				player_x += 1; 
 				System.out.println("player_x: "+player_x);
@@ -124,7 +134,7 @@ public class MapScreen extends Screen {
 		//moving up
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) 
 		{
-			if (player_y + 16 < 0 + map.getHeight()*map.getTileHeight()/2)
+			if (player_y + 16 + yShift < yShift + map_pixelheight)
 			{
 				player_y += 1; 
 				System.out.println("player_y: "+player_y);
@@ -135,7 +145,7 @@ public class MapScreen extends Screen {
 		//moving down
 		else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) 
 		{
-			if (player_y > 0 - map.getHeight()*map.getTileHeight()/2)
+			if (player_y + yShift> yShift)
 			{
 				player_y -= 1; 
 				System.out.println("player_y: "+player_y);
