@@ -122,7 +122,7 @@ public class MapScreen extends Screen {
 		}
 			
 		//moving up
-		else if (Gdx.input.isKeyPressed(Input.Keys.UP)) 
+		if (Gdx.input.isKeyPressed(Input.Keys.UP)) 
 		{
 			if (player_y + 16 < 0 + map.getHeight()*map.getTileHeight()/2)
 			{
