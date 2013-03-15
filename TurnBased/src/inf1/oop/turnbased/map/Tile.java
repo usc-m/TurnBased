@@ -2,8 +2,8 @@ package inf1.oop.turnbased.map;
 
 // A map square
 public class Tile {
-	boolean hasTexture;
-	String textureName;
+	private boolean hasTexture;
+	private String textureName;
 	private boolean passable;
 	
 	public void setPassable(boolean p){
@@ -25,6 +25,10 @@ public class Tile {
 	public Tile(String tex) {
 		textureName = tex;
 		hasTexture = true;
+	}
+	
+	public void setTextureName(String t){
+		this.textureName = t;
 	}
 	
 	public Tile() {

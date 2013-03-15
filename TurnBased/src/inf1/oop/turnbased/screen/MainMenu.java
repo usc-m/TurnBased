@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import inf1.oop.turnbased.TurnBasedGame;
-import inf1.oop.turnbased.screen.MapScreen;
 
 public class MainMenu implements Screen {
 
@@ -69,11 +68,13 @@ public class MainMenu implements Screen {
 		button.setY(Gdx.graphics.getHeight() / 2 - button.getHeight() / 2);
 
 		button.addListener(new InputListener() {
+			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				return true;
 			}
 
+			@Override
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				//game.setScreen(new MapScreen(game)); ?? Not sure how to getScreen here :S 

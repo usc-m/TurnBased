@@ -25,12 +25,6 @@ public class MapScreen extends Screen {
 	
 	
 	Map map;
-
-	//PLAYER INITIAL VARIABLES
-	//limits player's movement, will only be able to walk 1 grid per 30 times the code is checked. (see player movement script beneath)
-	int player_walktimertotal=30;
-	int player_walktimer=player_walktimertotal;
-	
 	
 	//VARIABLES, load these from a .json file later on?
 	int map_height=20;							//map height in tiles
@@ -65,14 +59,29 @@ public class MapScreen extends Screen {
 		batch = services.get(SpriteBatch.class);
 		
 		map = new Map(map_height,map_width, tile_size, tile_size);
+		
+		//will be subbed with generate map method, suggest removing(i.e. integrating in tile class) the pathing
 		for (int x=0; x<map_width; x+=1)
 		{
 			for (int y=0; y<map_height; y+=1)
-			{
-				//will be subbed with generate map method, suggest removing(i.e. integrating in tile class) the pathing
+			{	
 				map.setTile(x, y, new Tile("assets/data/spr_EmptySquare.png"));
+				map.getTile(x, y).setPassable(true);
 			}
 		}
+		//collision test -F
+		map.getTile(5, 5).setPassable(false);
+		map.getTile(5, 5).setTextureName("assets/data/tile.png");
+		map.getTile(10, 5).setPassable(false);
+		map.getTile(10, 5).setTextureName("assets/data/tile.png");
+		map.getTile(15, 5).setPassable(false);
+		map.getTile(15, 5).setTextureName("assets/data/tile.png");
+		map.getTile(5, 6).setPassable(false);
+		map.getTile(5, 6).setTextureName("assets/data/tile.png");
+		map.getTile(5, 7).setPassable(false);
+		map.getTile(5, 7).setTextureName("assets/data/tile.png");
+		map.getTile(8, 10).setPassable(false);
+		map.getTile(8, 10).setTextureName("assets/data/tile.png");
 		//------------------------------------------------------
 		
 		renderer.setMap(map);
@@ -115,8 +124,11 @@ public class MapScreen extends Screen {
 			if (player_x + xShift > xShift)
 			{
 				player_x -= 1; 	//consider using delta and f values -F
-				System.out.println("player_x: "+player_x);
-				player_walktimer=player_walktimertotal;
+				System.out.println("player_x: "+player_x + "_" + player_x/16 + "_" + player_y/16);
+				//this kind of detection avoids exceptions at boundaries with no handling
+				if(!map.getTile(player_x/16, player_y/16).isPassable() || !map.getTile(player_x/16, (player_y+16)/16).isPassable()){ //check both corners
+					player_x += 1;
+				}
 			}
 		} //take away the println parts when working.
 			
@@ -126,8 +138,10 @@ public class MapScreen extends Screen {
 			if (player_x + 16 + xShift < xShift + map_pixelwidth) //there is a +16 adjustment to playerX since detection point is bottom left
 			{
 				player_x += 1; 
-				System.out.println("player_x: "+player_x);
-				player_walktimer=player_walktimertotal;
+				System.out.println("player_x: "+player_x+ "_" + player_x/16 + "_" + player_y/16 );
+				if(!map.getTile((player_x+16)/16, player_y/16).isPassable() || !map.getTile((player_x+16)/16, (player_y+16)/16).isPassable()){
+					player_x -= 1;
+				}
 			}
 		}
 			
@@ -137,8 +151,10 @@ public class MapScreen extends Screen {
 			if (player_y + 16 + yShift < yShift + map_pixelheight)
 			{
 				player_y += 1; 
-				System.out.println("player_y: "+player_y);
-				player_walktimer=player_walktimertotal;
+				System.out.println("player_y: "+player_y+ "_" + player_x/16 + "_" + player_y/16);
+				if(!map.getTile(player_x/16, (player_y+16)/16).isPassable() || !map.getTile((player_x+16)/16, (player_y+16)/16).isPassable()){
+					player_y -= 1;
+				}
 			}
 		}
 			
@@ -148,8 +164,10 @@ public class MapScreen extends Screen {
 			if (player_y + yShift> yShift)
 			{
 				player_y -= 1; 
-				System.out.println("player_y: "+player_y);
-				player_walktimer=player_walktimertotal;
+				System.out.println("player_y: "+player_y+ "_" + player_x/16 + "_" + player_y/16 );
+				if(!map.getTile(player_x/16, player_y/16).isPassable() || !map.getTile((player_x+16)/16, player_y/16).isPassable()){
+					player_y += 1;
+				}
 			}
 		}
 	}

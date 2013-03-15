@@ -39,16 +39,24 @@ public class Map {
 			return false;
 		}
 		
-		if(x > width || y > height) {
+		if(x > width-1 || y > height-1) { //-1 because array index starts from 0
 			return false;
 		}
 		
-		return true;
+		else{
+			return true;
+		}
 	}
 	
 	public Tile getTile(int x, int y) {
-		if(!isValidCoordinates(x,y)) throw new IndexOutOfBoundsException();
-		
-		return tileGrid[x][y];
+		//if(!isValidCoordinates(x,y)) throw new IndexOutOfBoundsException();
+		if(!isValidCoordinates(x,y)){
+			//remove later -F
+			System.out.println("Invalid");
+			return tileGrid[0][0];   //will add handling in check later -F
+		}
+		else{
+			return tileGrid[x][y];
+		}
 	}
 }

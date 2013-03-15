@@ -1,7 +1,6 @@
 package inf1.oop.turnbased.TweenAccessors;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-
 import aurelienribon.tweenengine.TweenAccessor;
 
 public class SpriteTween implements TweenAccessor<Sprite> {
