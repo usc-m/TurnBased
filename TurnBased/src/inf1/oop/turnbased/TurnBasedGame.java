@@ -1,85 +1,47 @@
 package inf1.oop.turnbased;
 
-import inf1.oop.turnbased.graphics.MapRenderer;
-import inf1.oop.turnbased.graphics.RenderingParameters;
-import inf1.oop.turnbased.map.Map;
-import inf1.oop.turnbased.map.Tile;
-import inf1.oop.turnbased.screen.MapScreen;
-import inf1.oop.turnbased.screen.Screen;
-
-import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.FPSLogger;
+import inf1.oop.turnbased.screen.MainMenu;
 
-public class TurnBasedGame implements ApplicationListener {
-	private OrthographicCamera camera;
-	private SpriteBatch batch;
+public class TurnBasedGame extends Game {
 	
-	private MapRenderer mapRenderer;
-	private Map map;
-	private AssetManager assets;
-	private ServiceProvider services;
-	private RenderingParameters renderParams;
-	
-	private Screen currentScreen; // TODO: Make a proper screen manager so we don't have to handle that in the main class
+	public static final String VERSION = "0.0.0.02 Pre-Alpha";
+	public static final String LOG = "Turn-Based Game";
+	public static final boolean DEBUG = false;
+	FPSLogger log;
 	
 	@Override
-	public void create() {		
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
-		
-		camera = new OrthographicCamera(w,h);
-		batch = new SpriteBatch();
-		
-		services = new ServiceProvider();
-		services.set(batch, SpriteBatch.class);
-		
-		renderParams = new RenderingParameters().setXOffset(-w/2).setYOffset(-h/2);
-		services.set(renderParams, RenderingParameters.class);
-		
-		assets = new AssetManager();
-		services.set(assets, AssetManager.class);
-		//LOAD "TEXTURES" / sprites / images
-		assets.load("assets/data/tile.png", Texture.class);		
-		assets.load("assets/data/spr_EmptySquare.png", Texture.class);	
-		assets.load("assets/data/spr_Player.png", Texture.class);	
-		assets.finishLoading();
-		
-		//MATTHEWS WORKING CODE, can use as backup later
-		//map = new Map(5, 5, 16, 16); //<-- what do the 5's mean?
-		//map.setTile(2, 2, new Tile("assets/data/tile.png"));
-		
-		currentScreen = new MapScreen(services);
-		
+	public void create() {
+		log = new FPSLogger();
+		setScreen(new MainMenu(this));
 	}
 
 	@Override
 	public void dispose() {
-		batch.dispose();
-		assets.dispose();
+		super.dispose();
+		
 	}
 
 	@Override
-	public void render() {
-		float dt = Gdx.graphics.getDeltaTime(); // this is the number of seconds since last frame (so a value of 1 would be 1 second, but 0.5 would be 500 milliseconds)
-		currentScreen.update(dt);
-		currentScreen.draw(dt);
+	public void render() {		
+		super.render();
+		log.log();
 	}
 
 	@Override
 	public void resize(int width, int height) {
+		super.resize(width, height);
 	}
 
 	@Override
 	public void pause() {
+		super.pause();
 	}
 
 	@Override
 	public void resume() {
+		super.resume();
 	}
 }
