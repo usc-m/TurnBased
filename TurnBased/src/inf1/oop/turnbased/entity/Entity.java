@@ -22,6 +22,7 @@
  * setDamage(dmg) returns damage
  * getHealth() returns health
  * setHealth(health) sets health to new health, limits health to max-health if it exceeds the total.
+ * addTotalHealth(health) adds health to totalhealth. use negative number to subtract
  * heal(heal) increases current health by heal amount. Automagically limits heal to the total if required.
  * hit(hit) decreases current health by hit amount. Death script when health equals or falls below 0.
  * died() automatically triggered when ownhealth <= 0. What to do in this method? see suggestions in method.
@@ -141,6 +142,15 @@ public class Entity {
 			ownhealth = newhealth;
 		}
 	}
+	
+	//add entity total-health, use negative number to subtract.
+	public void addTotalHealth(int newhealth)
+	{
+		int deltahp = totalhealth - ownhealth;
+		totalhealth += newhealth;
+		ownhealth += deltahp;
+	}
+	
 	
 	//adds health to entity
 	public void heal(int heal)
