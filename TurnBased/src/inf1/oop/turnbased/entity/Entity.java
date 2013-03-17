@@ -17,6 +17,8 @@
  * setY(y) sets y
  * getName() returns name
  * setName(name) sets name
+ * getArmor() returns armor
+ * setArmor(armor) sets armor
  * getDamage() returns damage
  * attack() get attack, returns damage with a randomised equation and depending on weapon held.
  * setDamage(dmg) returns damage
@@ -32,8 +34,20 @@
 package inf1.oop.turnbased.entity;
 
 public class Entity {
-	private int x, y, totalhealth, ownhealth, damage, movespeed, weapon; //HIGH PRIORITY
-	//int money, stamina, attackspeed, level, experience, weapondamage, armor;//LOWER PRIORITY
+	private int x, y, totalhealth, ownhealth, damage, movespeed, weapon, armor; //HIGH PRIORITY
+	//int money, stamina, attackspeed, level, experience, weapondamage, ;//LOWER PRIORITY	
+	
+	//equipment
+	//M.Weapon ID: 	100-149 (main hand)
+	//O.Weapon ID:	150-199 (off hand)
+	//top-armor ID:	200-299
+	//leg-armor ID:	300-399
+	//shoulders ID:	400-499
+	//vambraces ID: 500-599
+	//Feet		ID: 600-699
+	private int mweapon, oweapon, top, leg, shoulder, vambs, foot;
+	
+
 	private String name;
 	private Entity temp = new Entity(x,y,name,damage,movespeed, totalhealth);
 	
@@ -49,6 +63,17 @@ public class Entity {
 		this.totalhealth = totalhealth;
 		this.ownhealth = totalhealth;
 		this.weapon = 0;
+		this.armor = 0;
+		
+		//armor
+		//numbers represent ID of the items
+		mweapon=0;
+		oweapon=0;
+		top=0;
+		leg=0;
+		shoulder=0;
+		vambs=0;
+		foot=0;
 	}
 	
 	//get entity object
@@ -91,6 +116,16 @@ public class Entity {
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+	
+	public void setArmor(int armor)
+	{
+		this.armor = armor;
+	}
+	
+	public int getArmor()
+	{
+		return armor;
 	}
 	
 	//get damage
@@ -186,4 +221,43 @@ public class Entity {
 		//add experience to player?
 		
 	}
+	
+	
+	
+	/**********************************
+	  ------------- ARMOR -------------
+	 *********************************/
+	
+	public void setMWeapon(int id)
+	{
+		mweapon=id;
+	}
+	public void setOWeapon(int id)
+	{
+		oweapon=id;
+	}
+	public void setTop(int id)
+	{
+		top=id;
+	}
+	public void setLeg(int id)
+	{
+		leg=id;
+	}
+	public void setShoulder(int id)
+	{
+		shoulder=id;
+	}
+	public void setVambs(int id)
+	{
+		vambs=id;
+	}
+	public void setFoot(int id)
+	{
+		foot=id;
+	}
+	
+	
+	
+	
 }
