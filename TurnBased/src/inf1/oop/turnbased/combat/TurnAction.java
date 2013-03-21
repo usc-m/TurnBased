@@ -1,5 +1,10 @@
 package inf1.oop.turnbased.combat;
 
 public enum TurnAction {
-	ATTACK
+	ATTACK,
+	FIRE,
+	ICE,
+	HEAL,
+	DEFEND,
+	FLEE
 }
