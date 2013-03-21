@@ -85,6 +85,8 @@ public class Battle {
 			break;
 			
 		case FIRE:
+			int fDmg = src.generateFireDamage(rng);
+			tgt.applyFireDamage(fDmg);
 			break;
 			
 		case FLEE:
@@ -97,6 +99,8 @@ public class Battle {
 			break;
 			
 		case ICE:
+			int iDmg = src.generateIceDamage(rng);
+			tgt.applyIceDamage(iDmg);
 			break;
 		}	
 	}
