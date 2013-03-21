@@ -27,6 +27,12 @@ public class Battle {
 		rng = new Random();
 	}
 	
+	// adds an object that wants to know if the battle has ended to our list of things that want to know
+	public void addBattleEndListener(BattleEndListener listener) {
+		listeners.add(listener);
+	}
+	
+	// checks to see if all the combatants in one team are dead
 	private boolean areAllDead(ArrayList<CombatEntity> faction) {
 		boolean result = true;
 		
@@ -37,12 +43,14 @@ public class Battle {
 		return result;
 	}
 	
+	// internal function to end the battle and notify things that want to know if the battle has ended
 	private void endBattle(BattleEndCondition cond) {
 		for(BattleEndListener l : listeners) {
 			l.onBattleEnd(cond);
 		}
 	}
 	
+	// applies a turn to the current battle state, possibly ending the battle
 	public void applyTurn(Turn turn) {
 		if(isValidTurn(turn)) {
 			turns.add(turn);
@@ -60,6 +68,7 @@ public class Battle {
 		// TODO: Throw exception
 	}
 
+	// performs the actual turn action
 	private void executeTurn(Turn turn) {
 		TurnAction action = turn.getAction();
 		CombatEntity src = turn.getSourceEntity();
@@ -92,6 +101,7 @@ public class Battle {
 		}	
 	}
 
+	// checks to see if the turn is a plausible turn
 	private boolean isValidTurn(Turn turn) {
 		TurnAction action = turn.getAction();
 		CombatEntity src = turn.getSourceEntity();

@@ -1,5 +1,6 @@
 package inf1.oop.turnbased.combat;
 
+// represents a turn in a battle
 public class Turn {
 	private CombatEntity sourceEntity, targetEntity;
 	private TurnAction action;
