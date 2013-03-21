@@ -76,8 +76,8 @@ public class Battle {
 		
 		switch(action) {
 		case ATTACK:
-			int damage = src.generateDamage(rng);			
-			tgt.applyDamage(damage);
+			int damage = src.generateDamage(DamageTypes.PHYSICAL, rng);			
+			tgt.applyDamage(DamageTypes.PHYSICAL, damage);
 			break;
 			
 		case DEFEND:
@@ -85,8 +85,8 @@ public class Battle {
 			break;
 			
 		case FIRE:
-			int fDmg = src.generateFireDamage(rng);
-			tgt.applyFireDamage(fDmg);
+			int fDmg = src.generateDamage(DamageTypes.FIRE, rng);
+			tgt.applyDamage(DamageTypes.FIRE, fDmg);
 			break;
 			
 		case FLEE:
@@ -99,8 +99,8 @@ public class Battle {
 			break;
 			
 		case ICE:
-			int iDmg = src.generateIceDamage(rng);
-			tgt.applyIceDamage(iDmg);
+			int iDmg = src.generateDamage(DamageTypes.ICE, rng);
+			tgt.applyDamage(DamageTypes.ICE, iDmg);
 			break;
 		}	
 	}
