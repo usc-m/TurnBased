@@ -4,6 +4,8 @@ import inf1.oop.turnbased.ServiceProvider;
 import inf1.oop.turnbased.graphics.MapRenderer;
 import inf1.oop.turnbased.graphics.RenderingParameters;
 import inf1.oop.turnbased.map.Map;
+import inf1.oop.turnbased.map.MapGenerator;
+import inf1.oop.turnbased.map.Room;
 import inf1.oop.turnbased.map.Tile;
 
 import com.badlogic.gdx.Gdx;
@@ -22,13 +24,14 @@ public class MapScreen extends Screen {
 	MapRenderer renderer;
 	Camera camera;
 	AssetManager assets;
+	MapGenerator generator;
 	
 	
 	Map map;
 	
 	//VARIABLES, load these from a .json file later on?
-	int map_height=20;							//map height in tiles
-	int map_width=20; 							//map width in tiles
+	int map_height=24;							//map height in tiles
+	int map_width=42; 							//map width in tiles
 	int tile_size=16; 							//tile size in px
 	int map_pixelheight=map_height*tile_size; 	//map height in pixels
 	int map_pixelwidth=map_width*tile_size; 	//map width in pixels
@@ -36,13 +39,14 @@ public class MapScreen extends Screen {
 	//Player Data
 	int player_x=0; 	//player x-position in px
 	int player_y=0; 	//yplayer y-position in px
+	int stairX, stairY;
 	Texture playerS;	//player sprite
 	
 	//global rendering parameters
 	RenderingParameters renderParams;
 	
 	//x,y to draw map at
-	float xShift = 240;
+	float xShift = 0;
 	float yShift = 0;
 	
 	public MapScreen(ServiceProvider services) {
@@ -58,34 +62,29 @@ public class MapScreen extends Screen {
 		renderer = new MapRenderer(services);
 		batch = services.get(SpriteBatch.class);
 		
-		map = new Map(map_height,map_width, tile_size, tile_size);
+		map = new Map(map_width,map_height, tile_size, tile_size);
 		
-		//will be subbed with generate map method, suggest removing(i.e. integrating in tile class) the pathing
-		for (int x=0; x<map_width; x+=1)
-		{
-			for (int y=0; y<map_height; y+=1)
-			{	
-				map.setTile(x, y, new Tile("assets/data/spr_EmptySquare.png"));
-				map.getTile(x, y).setPassable(true);
-			}
-		}
-		//collision test -F
-		map.getTile(5, 5).setPassable(false);
-		map.getTile(5, 5).setTextureName("assets/data/tile.png");
-		map.getTile(10, 5).setPassable(false);
-		map.getTile(10, 5).setTextureName("assets/data/tile.png");
-		map.getTile(15, 5).setPassable(false);
-		map.getTile(15, 5).setTextureName("assets/data/tile.png");
-		map.getTile(5, 6).setPassable(false);
-		map.getTile(5, 6).setTextureName("assets/data/tile.png");
-		map.getTile(5, 7).setPassable(false);
-		map.getTile(5, 7).setTextureName("assets/data/tile.png");
-		map.getTile(8, 10).setPassable(false);
-		map.getTile(8, 10).setTextureName("assets/data/tile.png");
-		//------------------------------------------------------
+		//make map, generate and spawn player initially
+		generator = new MapGenerator(map);
+		spawn();
 		
-		renderer.setMap(map);
+		//player sprite
 		playerS = assets.get("assets/data/spr_Player.png");
+	}
+	
+	
+	//spawns the player and the map(maybe enemies later) -F
+	public void spawn(){
+		//generate map, pass to renderer
+		renderer.setMap(generator.generate());
+		
+		//spawn x, y
+		player_x = generator.getMapStartX() * 16;
+		player_y = generator.getMapStartY() * 16;
+		
+		//stair to next floor
+		stairX = generator.getMapEndX();
+		stairY = generator.getMapEndY();
 	}
 	
 	@Override
@@ -117,6 +116,16 @@ public class MapScreen extends Screen {
 		 * ####################################################### */
 		
 		//PLAYER MOVEMENT USING ARROW KEYS	
+		// check if player is at stairs x,y
+		if(player_x/16 == stairX && player_y/16 == stairY){
+			spawn();
+		}
+		
+		//testing generation
+		if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+			spawn();
+		}
+		
 		
 		//moving left
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) 

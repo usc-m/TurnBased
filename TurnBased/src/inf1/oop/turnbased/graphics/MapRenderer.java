@@ -34,6 +34,8 @@ public class MapRenderer {
 		float xOffset = renderParams.getXOffset() + xShift;
 		float yOffset = renderParams.getYOffset() + yShift;
 		
+		
+		//perhaps *some* method to create an image after reading once would mean faster rendering
 		for(int x = 0; x < currentMap.getWidth(); x++) {
 			for(int y = 0; y < currentMap.getHeight(); y++) {
 				Tile t = currentMap.getTile(x, y);

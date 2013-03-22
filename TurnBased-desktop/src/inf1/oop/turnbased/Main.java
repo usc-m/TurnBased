@@ -8,8 +8,9 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "TurnBased";
 		cfg.useGL20 = false;
-		cfg.width = 800;
-		cfg.height = 320;
+		cfg.width = 672;
+		cfg.height = 378;
+		cfg.vSyncEnabled = true;
 		
 		new LwjglApplication(new TurnBasedGame(), cfg);
 		//test
