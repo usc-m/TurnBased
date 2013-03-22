@@ -57,6 +57,10 @@ public class TurnBasedGame extends Game implements ApplicationListener {
 		 assets.load("assets/data/tile.png", Texture.class);    
 		 assets.load("assets/data/spr_EmptySquare.png", Texture.class);  
 		 assets.load("assets/data/spr_Player.png", Texture.class);  
+		 assets.load("assets/data/spr_16x16Wall.png", Texture.class);  
+		 assets.load("assets/data/spr_16x16Wall2.png", Texture.class);  
+		 assets.load("assets/data/spr_16x16Edge.png", Texture.class);  
+		 assets.load("assets/data/bg_Background.jpg", Texture.class);
 		 assets.finishLoading();
 		  
 		//comment out respectively to enter map/menu screen, for now 
