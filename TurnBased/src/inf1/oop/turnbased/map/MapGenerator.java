@@ -207,7 +207,7 @@ public class MapGenerator {
 	//MAP GENERATION FROM DATA-------------------------------------------------------------------------------
 	public void placeMap(){
 		//fill with walls
-		Tile temp = new Tile("assets/data/tile.png");
+		Tile temp = new Tile("assets/data/spr_16x16Wall.png");
 		temp.setPassable(false);
 		for (int x=0; x<map.getWidth(); x++)
 		{
@@ -218,7 +218,7 @@ public class MapGenerator {
 		}
 		
 		//fill with empty(for now pre-determined 10x5) space, will be some semi-random size
-		temp = new Tile("assets/data/spr_EmptySquare.png");
+		temp = new Tile("assets/data/spr_16x16Floor.png");
 		temp.setPassable(true);
 		for(Room rm : rooms){
 			for (int xp=1;xp<10;xp++) {
@@ -227,7 +227,7 @@ public class MapGenerator {
 					
 					//set stairs tile
 					if(rm.getStartX() + xp == mapEndX && rm.getStartY() + yp == mapEndY){
-						map.setTile(rm.getStartX() + xp, rm.getStartY() + yp, new Tile("assets/data/tile.png"));
+						map.setTile(rm.getStartX() + xp, rm.getStartY() + yp, new Tile("assets/data/spr_16x16Stairs.png"));
 						map.getTile(rm.getStartX() + xp, rm.getStartY() + yp).setPassable(true);
 					}
 				}
@@ -270,7 +270,7 @@ public class MapGenerator {
 		ArrayList<Room> connections = new ArrayList<Room>();
 		int corStartX, corEndX, corLength, corStartY, corEndY, temp;
 		
-		Tile square = new Tile("assets/data/spr_EmptySquare.png");
+		Tile square = new Tile("assets/data/spr_16x16Floor.png");
 		square.setPassable(true);
 		
 		//for each room connect
