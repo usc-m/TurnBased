@@ -25,7 +25,7 @@ public class MapGenerator {
 	private int startRoom, endRoom, mapStartX, mapStartY, mapEndX, mapEndY;
 	
 	//14,28,42; 8,16,24
-	//divides a map into a grid, 3x3 in our case but configurble from parameters
+	//divides a map into a grid, 3x3 in our case but configurable from parameters
 	public void divMap(int times){
 		roomBase = times;
 		rooms = new ArrayList<Room>();
@@ -217,6 +217,24 @@ public class MapGenerator {
 			}
 		}
 		
+		//draw edges - TRANSPARANT BACKGROUNDS ARE NOT TRANSPARANT.
+		//Tile edge = new Tile("assets/data/spr_16x16Edge.png");
+		/*for (int i=0; i<3; i++) //horizontally aligned rooms
+		{
+			for (int j=0; j<3; j++) //vertically aligned rooms
+			{
+				//top of each room
+				for (int k=1; k<10; k++)
+				{
+					int subroom_width=j*13*16;
+					int subroom_height=i*9*16;
+					map.setTile(subroom_width+16*k, subroom_height+0, edge);
+				}
+			}
+		}*/
+		//map.setTile(16, 0, edge);
+		
+		
 		//fill with empty(for now pre-determined 10x5) space, will be some semi-random size
 		temp = new Tile("assets/data/spr_16x16Floor.png");
 		temp.setPassable(true);
@@ -276,10 +294,15 @@ public class MapGenerator {
 		//for each room connect
 		for(Room rm : rooms){
 			connections = rm.getConnections();
+			
+			
+			
 			for(Room con : connections){
 				//get x,y for the two rooms
 				corStartX = (rm.getStartX() + rm.getEndX())/2;
 				corEndX = (con.getStartX() + con.getEndX())/2;
+				
+				//System.out.println("room: "+rm+", connections: "+con);
 				
 				//since our coords are left to right, we change start-end, so that we do not bother filling right to left
 				if(corStartX > corEndX){
