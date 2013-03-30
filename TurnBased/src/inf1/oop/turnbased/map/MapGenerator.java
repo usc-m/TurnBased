@@ -3,6 +3,8 @@ package inf1.oop.turnbased.map;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.badlogic.gdx.math.Vector2;
+
 //this class can be in the map renderer or the map screen or the map object alternatively
 /*TODO Divide map: DONE + TESTED
  *TODO Flag grid: DONE
@@ -340,7 +342,13 @@ public class MapGenerator {
 		setPortals();
 		placeMap();
 		setCorridors();
-		return map;
+		
+		if(!Pathfinding.search(map, new Vector2(mapStartX, mapStartY), new Vector2(mapEndX, mapEndY))){
+			return this.generate();
+		}
+		else {
+			return map;
+		}
 	}
 	
 	public static void main(String[] args){
