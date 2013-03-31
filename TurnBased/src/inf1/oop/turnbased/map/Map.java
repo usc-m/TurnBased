@@ -79,7 +79,7 @@ public class Map {
 	
 	public void setItemList(Vector2 item)
 	{
-		this.monsters.add(item);
+		this.items.add(item);
 	}
 	
 	public ArrayList<Vector2> getItemList()

@@ -10,6 +10,7 @@ import inf1.oop.turnbased.combat.TurnAction;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,10 +18,13 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
 public class CombatScreen implements Screen {
 
@@ -30,11 +34,12 @@ public class CombatScreen implements Screen {
 	private Stage stage;
 	private Table combatActions;
 	
-	private BitmapFont font;
+	private BitmapFont font, whiteFont;
 	private TextureAtlas atlas;
 	private Skin skin;
 	private TextButtonStyle style;
 	private SpriteBatch batch;
+	private Label combatLog;
 	
 	private CombatEntity player, monster;
 	private final MapScreen mapScreen;
@@ -71,6 +76,10 @@ public class CombatScreen implements Screen {
 		stage.draw();
 		batch.end();
 		
+	}
+	
+	public void setCombatText(String combatText) {
+		combatLog.setText(combatText);
 	}
 
 	@Override
@@ -173,7 +182,18 @@ public class CombatScreen implements Screen {
 		combatActions.setWidth(width);
 		combatActions.setHeight(40);
 		combatActions.setY(10);
+		
 		stage.addActor(combatActions);
+		
+		LabelStyle ls = new LabelStyle(whiteFont, Color.WHITE);
+		
+		combatLog = new Label("Hello world!", ls);
+		combatLog.setWidth(width);
+		combatLog.setHeight(40);
+		combatLog.setY(60);
+		combatLog.setAlignment(Align.center);
+		
+		stage.addActor(combatLog);
 		
 	}
 
@@ -183,6 +203,7 @@ public class CombatScreen implements Screen {
 		skin = new Skin();
 		skin.addRegions(atlas);
 		font = new BitmapFont(Gdx.files.internal("assets/data/font.fnt"), false);
+		whiteFont = new BitmapFont(Gdx.files.internal("assets/data/whitefont.fnt"), false);
 		batch = new SpriteBatch();
 	}
 
