@@ -1,5 +1,7 @@
 package inf1.oop.turnbased.map;
 
+import inf1.oop.turnbased.entity.Entity;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -365,9 +367,11 @@ public class MapGenerator {
 		
 		Random range = new Random();
 		
+		
 		Tile monster1 = new Tile("assets/data/Monsters/spr_16x16Monster1.png");
 		Tile monster2 = new Tile("assets/data/Monsters/spr_16x16Monster2.png");
 		Tile monster3 = new Tile("assets/data/Monsters/spr_16x16Monster3.png");
+		Tile bugfix = new Tile("assets/data/Monsters/spr_16x16Wall2.png");
 		
 		monster1.setPassable(true);
 		monster2.setPassable(true);
@@ -378,17 +382,18 @@ public class MapGenerator {
 		{
 			for (int y=0; y<map.getHeight(); y++)
 			{
-				if (map.getTile(x, y).isPassable())
+				if (map.getTile(x, y).isPassable() && x != mapStartX && y != mapStartY)
 				{
 					if (range.nextInt(10) == 0)
 					{
-						int spawn = range.nextInt(2);
+						int spawn = range.nextInt(3);
 						
 						switch (spawn)
 						{
-							case 1: map.setTile(x, y, monster1); break;
-							case 2: map.setTile(x, y, monster2); break;
-							case 3: map.setTile(x, y, monster3); break;
+							case 0: map.setTile(x, y, monster1); break;
+							case 1: map.setTile(x, y, monster2); break;
+							case 2: map.setTile(x, y, monster3); break;
+							case 3: map.setTile(x, y, bugfix); break;
 						}
 						
 						Vector2 mon = new Vector2(x,y);

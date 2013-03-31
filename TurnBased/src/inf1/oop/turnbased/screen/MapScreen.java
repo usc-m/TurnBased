@@ -3,6 +3,7 @@ package inf1.oop.turnbased.screen;
 import java.util.ArrayList;
 
 import inf1.oop.turnbased.ServiceProvider;
+import inf1.oop.turnbased.entity.Entity;
 import inf1.oop.turnbased.graphics.MapRenderer;
 import inf1.oop.turnbased.graphics.RenderingParameters;
 import inf1.oop.turnbased.map.Map;
@@ -45,9 +46,12 @@ public class MapScreen extends Screen {
 	int player_x=0; 	//player x-position in px
 	int player_y=0; 	//yplayer y-position in px
 	int stairX, stairY;
+	
 	Texture playerS;	//player sprite
 	//global rendering parameters
 	RenderingParameters renderParams;
+	
+
 	
 	
 	
@@ -81,7 +85,6 @@ public class MapScreen extends Screen {
 		//}
 		
 	}
-	
 
 	
 	//spawns the player and the map(maybe enemies later) -F
@@ -169,6 +172,8 @@ public class MapScreen extends Screen {
 		
 	}
 
+
+	
 	//NOTE: I am not offseting player_x, y itself in order to make the processing of the array less of a hassle -F
 	
 	@Override
@@ -180,7 +185,7 @@ public class MapScreen extends Screen {
 		
 		//PLAYER MOVEMENT USING ARROW KEYS	
 		// check if player is at stairs x,y
-		if((player_x+8)/16 == stairX && (player_y+8) == stairY){
+		if((player_x+8)/16 == stairX && (player_y+8)/16 == stairY){
 			spawn();
 		}
 		
@@ -193,7 +198,8 @@ public class MapScreen extends Screen {
 		ArrayList<Vector2> tuna = map.getMonsterList();
 		for (Vector2 monster : tuna)
 		{
-			if ((player_x+8)/16 == monster.x && (player_y+8)/16 == monster.y)
+			//if ((player_x+8)/16 == monster.x && (player_y+8)/16 == monster.y)
+			if ((player_x)/16 == monster.x && (player_y)/16 == monster.y)
 				{
 					//collision
 					System.out.println("COLLIIIIISION with monster !!! QEWTQWETIPOUQETOPIUY!OH#@N$FGV&Y#!!#()*%");
@@ -206,7 +212,8 @@ public class MapScreen extends Screen {
 		ArrayList<Vector2> tuna2 = map.getItemList();
 		for (Vector2 item : tuna2)
 		{
-			if ((player_x+8)/16 == item.x && (player_y+8)/16 == item.y)
+			//if ((player_x+8)/16 == item.x && (player_y+8)/16 == item.y)
+			if ((player_x)/16 == item.x && (player_y)/16 == item.y)	
 				{
 					//collision
 					System.out.println("COLLIIIIISION with item !!! QEWTQWETIPOUQETOPIUY!OH#@N$FGV&Y#!!#()*%");
@@ -275,8 +282,7 @@ public class MapScreen extends Screen {
 				}
 			}
 		}
-		
-		
+
 	}
 		//IMPORTANT -> margin_bottom and margin_left must come from the map-drawing code above.
 		//do not make separate variables with the same definition, important when putting these blocks in external classes.
