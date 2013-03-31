@@ -62,6 +62,11 @@ public class TurnBasedGame extends Game implements ApplicationListener {
 		 assets.load("assets/data/spr_16x16Edge.png", Texture.class);  
 		 assets.load("assets/data/spr_16x16Floor.png", Texture.class);
 		 assets.load("assets/data/spr_16x16Stairs.png", Texture.class);
+		 assets.load("assets/data/spr_16x16Item.png", Texture.class);
+		 //Monsters
+		 assets.load("assets/data/Monsters/spr_16x16Monster1.png", Texture.class);
+		 assets.load("assets/data/Monsters/spr_16x16Monster2.png", Texture.class);
+		 assets.load("assets/data/Monsters/spr_16x16Monster3.png", Texture.class);
 		 //My apologies this part is messy. Couldn't work out how to do it from one image...
 		 assets.load("assets/data/PlayerSprite/Stand.png", Texture.class);
 		 assets.load("assets/data/PlayerSprite/StandBack.png", Texture.class);

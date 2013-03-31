@@ -362,10 +362,17 @@ public class MapGenerator {
 	
 	public void spawnMonsters()
 	{
-		Tile monster = new Tile("assets/data/spr_16x16Wall2.png");
+		
 		Random range = new Random();
 		
-		monster.setPassable(true);
+		Tile monster1 = new Tile("assets/data/Monsters/spr_16x16Monster1.png");
+		Tile monster2 = new Tile("assets/data/Monsters/spr_16x16Monster2.png");
+		Tile monster3 = new Tile("assets/data/Monsters/spr_16x16Monster3.png");
+		
+		monster1.setPassable(true);
+		monster2.setPassable(true);
+		monster3.setPassable(true);
+		
 		for (int x=0; x<map.getWidth(); x++)
 		{
 			for (int y=0; y<map.getHeight(); y++)
@@ -374,7 +381,15 @@ public class MapGenerator {
 				{
 					if (range.nextInt(10) == 0)
 					{
-						map.setTile(x, y, monster);
+						int spawn = range.nextInt(2);
+						switch (spawn)
+						{
+						case 1: map.setTile(x, y, monster1); break;
+						case 2: map.setTile(x, y, monster2); break;
+						case 3: map.setTile(x, y, monster3); break;
+						}
+						
+						
 					}
 				}
 			}
@@ -383,10 +398,10 @@ public class MapGenerator {
 	
 	public void spawnItems()
 	{
-		Tile monster = new Tile("assets/data/spr_16x16Edge.png");
+		Tile item = new Tile("assets/data/spr_16x16Item.png");
 		Random range = new Random();
 		
-		monster.setPassable(true);
+		item.setPassable(true);
 		for (int x=0; x<map.getWidth(); x++)
 		{
 			for (int y=0; y<map.getHeight(); y++)
@@ -395,7 +410,7 @@ public class MapGenerator {
 				{
 					if (range.nextInt(60) == 0)
 					{
-						map.setTile(x, y, monster);
+						map.setTile(x, y, item);
 					}
 				}
 			}
