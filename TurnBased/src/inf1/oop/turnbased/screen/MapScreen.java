@@ -187,7 +187,6 @@ public class MapScreen extends Screen {
 			
 		{
 			steps();
-		//	playerS = assets.get("assets/data/PlayerSprite/StandLeft.png");
 			if (player_x + xShift > xShift)
 			{
 				player_x -= 1; 	//consider using delta and f values -F
@@ -203,7 +202,6 @@ public class MapScreen extends Screen {
 		else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) 
 		{
 			steps();
-		//	playerS = assets.get("assets/data/PlayerSprite/StandRight.png");
 			if (player_x + 16 + xShift < xShift + map_pixelwidth) //there is a +16 adjustment to playerX since detection point is bottom left
 			{
 				player_x += 1; 
@@ -218,7 +216,6 @@ public class MapScreen extends Screen {
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) 
 		{			
 			steps();
-		//	playerS = assets.get("assets/data/PlayerSprite/StandBack.png");
 			
 			if (player_y + 16 + yShift < yShift + map_pixelheight)
 			{
@@ -236,7 +233,6 @@ public class MapScreen extends Screen {
 		{
 			steps();
 
-			//playerS = assets.get("assets/data/PlayerSprite/Stand.png");
 			if (player_y + yShift> yShift)
 			{
 				player_y -= 1; 
