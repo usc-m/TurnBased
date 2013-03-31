@@ -103,4 +103,13 @@ public class CombatEntity {
 			listener.onEntityKilled(this);
 		}
 	}
+	
+	public void increaseMaxHp(int increase) {
+		maxHp += increase;
+	}
+	
+	public void decreaseMaxHp(int decrease) {
+		maxHp -= decrease;
+	}
+
 }

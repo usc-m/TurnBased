@@ -33,8 +33,11 @@
 
 package inf1.oop.turnbased.entity;
 
+import inf1.oop.turnbased.combat.CombatEntity;
+import inf1.oop.turnbased.combat.Stats;
+
 public class Entity {
-	private int x, y, totalhealth, ownhealth, damage, movespeed, weapon, armor; //HIGH PRIORITY
+	private int x, y;; //HIGH PRIORITY
 	//int money, stamina, attackspeed, level, experience, weapondamage, ;//LOWER PRIORITY	
 	
 	//equipment
@@ -45,41 +48,34 @@ public class Entity {
 	//shoulders ID:	400-499
 	//vambraces ID: 500-599
 	//Feet		ID: 600-699
-	private int mweapon, oweapon, top, leg, shoulder, vambs, foot;
+	//private int mweapon, oweapon, top, leg, shoulder, vambs, foot;
 	
+	
+	private CombatEntity fightingEntity;
 
 	private String name;
-	private Entity temp = new Entity(x,y,name,damage,movespeed, totalhealth);
 	
 	//constructor; similar to "instance_create(x,y,name);"
-	public Entity(int x, int y, String name, int damage, int movespeed, int totalhealth)
+	public Entity(int x, int y, String name)
 	{
 		//Initializes variables
 		this.x = x;
 		this.y = y;
 		this.name = name;
-		this.damage = damage;
-		this.movespeed = movespeed;
-		this.totalhealth = totalhealth;
-		this.ownhealth = totalhealth;
-		this.weapon = 0;
-		this.armor = 0;
+		
+		fightingEntity = new CombatEntity(100, new Stats());
+		//this.weapon = 0;
+		//this.armor = 0;
 		
 		//armor
 		//numbers represent ID of the items
-		mweapon=0;
+		/*mweapon=0;
 		oweapon=0;
 		top=0;
 		leg=0;
 		shoulder=0;
 		vambs=0;
-		foot=0;
-	}
-	
-	//get entity object
-	public Entity getObject()
-	{
-		return temp;
+		foot=0;*/
 	}
 	
 	//method that returns object's x-position
@@ -117,118 +113,16 @@ public class Entity {
 	{
 		this.name = name;
 	}
-	
-	public void setArmor(int armor)
-	{
-		this.armor = armor;
+
+	public CombatEntity getCombatEntity() {
+		return fightingEntity;
 	}
-	
-	public int getArmor()
-	{
-		return armor;
-	}
-	
-	//get damage
-	public int getDamage()
-	{
-		return damage;
-	}
-	
-	//set damage
-	public void setDamage(int damage)
-	{
-		this.damage = damage;
-	}
-	
-	//get attack, outputs damage with a randomized equation and depending on weapon held.
-	public int attack()
-	{
-		return (int) Math.round(damage*(1+0.6*weapon) + (0.3*damage+0.5*(1+weapon))*Math.random());
-	}
-	
-	//get entity health
-	public int getHealth()
-	{
-		if (ownhealth > totalhealth) //make sure it cannot return a health above the maximum health
-		{
-			ownhealth = totalhealth;
-			return totalhealth;
-		}
-		else
-		{
-			return ownhealth;
-		}
-	}
-	
-	//set entity health
-	public void setHealth(int newhealth)
-	{
-		if (newhealth > totalhealth) //make sure it cannot return a health above the set maximum
-		{
-			newhealth = totalhealth;
-		}
-		else if (newhealth <= 0)
-		{
-			//DIED SCRIPT???
-			died();
-		}
-		else
-		{
-			ownhealth = newhealth;
-		}
-	}
-	
-	//add entity total-health, use negative number to subtract.
-	public void addTotalHealth(int newhealth)
-	{
-		int deltahp = totalhealth - ownhealth;
-		totalhealth += newhealth;
-		ownhealth += deltahp;
-	}
-	
-	
-	//adds health to entity
-	public void heal(int heal)
-	{
-		if (heal + ownhealth > totalhealth)
-		{
-			ownhealth = totalhealth;
-		}
-		else
-		{
-			ownhealth += heal;
-		}
-	}
-	
-	//decreases health from entity
-	public void hit(int hit)
-	{
-		if (ownhealth - hit <= 0)
-		{
-			//DIED SCRIPT???
-			died();
-		}
-		else
-		{
-			ownhealth -= hit;
-		}
-	}
-	
-	public void died()
-	{
-		//delete object?
-		//drop items/money?
-		//add experience to player?
-		
-	}
-	
-	
 	
 	/**********************************
 	  ------------- ARMOR -------------
 	 *********************************/
 	
-	public void setMWeapon(int id)
+	/*public void setMWeapon(int id)
 	{
 		mweapon=id;
 	}
@@ -255,7 +149,7 @@ public class Entity {
 	public void setFoot(int id)
 	{
 		foot=id;
-	}
+	}*/
 	
 	
 	

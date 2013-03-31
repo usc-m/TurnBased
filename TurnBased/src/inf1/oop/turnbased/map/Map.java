@@ -95,5 +95,8 @@ public class Map {
 		items.clear();
 	}
 	
+	public void removeMonster(Vector2 mon) {
+		this.monsters.remove(mon);
+	}
 	
 }

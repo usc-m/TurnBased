@@ -121,7 +121,7 @@ public class Battle {
 		
 		
 		// if we're healing, we want them to be on the same team
-		if(action == TurnAction.HEAL) {
+		if(action == TurnAction.HEAL || action == TurnAction.DEFEND || action == TurnAction.FLEE) {
 			return (!src.isDead()) && (!tgt.isDead()) && srcExists && tgtExists && (!differentTeams);
 		} else { // otherwise we want them on different teams team
 			return (!src.isDead()) && (!tgt.isDead()) && srcExists && tgtExists && differentTeams;

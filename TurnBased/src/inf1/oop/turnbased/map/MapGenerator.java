@@ -21,418 +21,458 @@ import com.badlogic.gdx.math.Vector2;
  *FIXME There is a bug where some rooms have no corridors between, although debugging shows them connected..
  */
 public class MapGenerator {
-	
+
 	private Map map;
 	private ArrayList<Room> rooms;
-	
+
 	private int roomBase;
 	private int startRoom, endRoom, mapStartX, mapStartY, mapEndX, mapEndY;
-	
-	//14,28,42; 8,16,24
-	//divides a map into a grid, 3x3 in our case but configurable from parameters
-	public void divMap(int times){
+
+	// 14,28,42; 8,16,24
+	// divides a map into a grid, 3x3 in our case but configurable from
+	// parameters
+	public void divMap(int times) {
 		roomBase = times;
 		rooms = new ArrayList<Room>();
-		for(int ID = 0; ID < times*times; ID++){
+		for (int ID = 0; ID < times * times; ID++) {
 			Room temp = new Room(ID, false);
-			
+
 			System.out.println("ROOM" + ID);
-			
-			//set start X by division(resetting due to mod)
-			temp.setStartX((ID%times)*((map.getWidth())/times));
-			temp.setEndX(temp.getStartX()+map.getWidth()/times - 1);
+
+			// set start X by division(resetting due to mod)
+			temp.setStartX((ID % times) * ((map.getWidth()) / times));
+			temp.setEndX(temp.getStartX() + map.getWidth() / times - 1);
 			System.out.println("X: " + temp.getStartX());
 			System.out.println("X: " + temp.getEndX());
-			
-			//set start y by division(resetting due to ceil)
-			temp.setStartY((int) ((Math.ceil(ID/times))*(map.getHeight())/times));			
-			temp.setEndY(temp.getStartY()+map.getHeight()/times - 1);
+
+			// set start y by division(resetting due to ceil)
+			temp.setStartY((int) ((Math.ceil(ID / times)) * (map.getHeight()) / times));
+			temp.setEndY(temp.getStartY() + map.getHeight() / times - 1);
 			System.out.println("Y: " + temp.getStartY());
 			System.out.println("Y: " + temp.getEndY());
 			System.out.println();
-			
+
 			rooms.add(temp);
 		}
 	}
-	
-	public void connect(){
-		//STEP 1 -  CONNECT ALL UNCONNECTED NEIGHBOURS------------------------------------------------
-		//picks random room based on index from 0 to times*times(nb. of rooms)
+
+	public void connect() {
+		// STEP 1 - CONNECT ALL UNCONNECTED
+		// NEIGHBOURS------------------------------------------------
+		// picks random room based on index from 0 to times*times(nb. of rooms)
 		Random rand = new Random();
-		int currentRoom = rand.nextInt(roomBase*roomBase);
-		
-		//the starting room for the player
+		int currentRoom = rand.nextInt(roomBase * roomBase);
+
+		// the starting room for the player
 		setStartRoom(currentRoom);
-		
-	    rooms.get(currentRoom).setConnected(true);
+
+		rooms.get(currentRoom).setConnected(true);
 		boolean found = false;
 		int index = 0;
-		
+
 		boolean allC = checkConnected(rooms);
-		
-		//find and check the room's neighbours
-		ArrayList<Room> neighbours = findNs(currentRoom); //could just store ID less memory - search needed, lazy and not much difference
+
+		// find and check the room's neighbours
+		ArrayList<Room> neighbours = findNs(currentRoom); // could just store ID
+															// less memory -
+															// search needed,
+															// lazy and not much
+															// difference
 		boolean nC = checkConnected(neighbours);
-		
-		//while there are unconnected neighbours
-		while(!nC){
-			
+
+		// while there are unconnected neighbours
+		while (!nC) {
+
 			System.out.println("Current room: " + currentRoom);
 			index = 0;
-			
-			//while no unconnected neighbour at index
-			while(found == false){
-				//pick random neighbour
+
+			// while no unconnected neighbour at index
+			while (found == false) {
+				// pick random neighbour
 				index = rand.nextInt(neighbours.size());
-				if(!neighbours.get(index).isConnected()){
-					System.out.println("Neighbor to connect: " + neighbours.get(index).getID());
+				if (!neighbours.get(index).isConnected()) {
+					System.out.println("Neighbor to connect: "
+							+ neighbours.get(index).getID());
 					found = true;
 				}
 			}
-			
-		    System.out.println("\n" + nC);
-			rooms.get(currentRoom).addConnection(neighbours.get(index)); //connect the random unconnected neighbor to this room
-			
+
+			System.out.println("\n" + nC);
+			rooms.get(currentRoom).addConnection(neighbours.get(index)); // connect
+																			// the
+																			// random
+																			// unconnected
+																			// neighbor
+																			// to
+																			// this
+																			// room
+
 			currentRoom = neighbours.get(index).getID();
 			rooms.get(currentRoom).setConnected(true);
 			found = false;
 			neighbours = findNs(currentRoom);
 			nC = checkConnected(neighbours);
 		}
-		System.out.println("\n" + nC + " - all unconnected neighbors connected");
-		
-		//STEP 1 FINISHED--------------------------------------------------------------------------------
+		System.out
+				.println("\n" + nC + " - all unconnected neighbors connected");
 
-		//STEP 2 CONNECT ALL UNCONNECTED ROOMS TO A RANDOM CONNECTED NEIGHBOUR---------------------------
-		//reset for second search
+		// STEP 1
+		// FINISHED--------------------------------------------------------------------------------
+
+		// STEP 2 CONNECT ALL UNCONNECTED ROOMS TO A RANDOM CONNECTED
+		// NEIGHBOUR---------------------------
+		// reset for second search
 		found = false;
 		index = 0;
 		allC = checkConnected(rooms);
-				
-		while(!allC){
-			//find a random unconnected room
-			do{
-				//System.out.println("Checking for unconnected room");
+
+		while (!allC) {
+			// find a random unconnected room
+			do {
+				// System.out.println("Checking for unconnected room");
 				currentRoom = rand.nextInt(rooms.size());
-			}while(rooms.get(currentRoom).isConnected() == true || hasConnectedNs(findNs(currentRoom)) == false);
-					
-			//and find its neighbours
+			} while (rooms.get(currentRoom).isConnected() == true
+					|| hasConnectedNs(findNs(currentRoom)) == false);
+
+			// and find its neighbours
 			neighbours = findNs(currentRoom);
-				
+
 			System.out.println("Current room: " + currentRoom);
-					
+
 			index = 0;
-			
-			//FIXME Perhaps is possible for no neighbours to be connected - method that checks this and keeps cycling to others if false
-			//FIXED! added check for connected neighbours, else it got stuck on trying to find a connected neighbour when there was none, very rare but annoying as hell
-			//keep searching for a connected neighbour
-			while(found == false){
+
+			// FIXME Perhaps is possible for no neighbours to be connected -
+			// method that checks this and keeps cycling to others if false
+			// FIXED! added check for connected neighbours, else it got stuck on
+			// trying to find a connected neighbour when there was none, very
+			// rare but annoying as hell
+			// keep searching for a connected neighbour
+			while (found == false) {
 				index = rand.nextInt(neighbours.size());
-				//System.out.println("We are stuck");
+				// System.out.println("We are stuck");
 				System.out.println(index);
-				if(neighbours.get(index).isConnected()){
-					System.out.println("Neighbor to connect: " + neighbours.get(index).getID());
+				if (neighbours.get(index).isConnected()) {
+					System.out.println("Neighbor to connect: "
+							+ neighbours.get(index).getID());
 					found = true;
 				}
 			}
-					
-				    
-			rooms.get(currentRoom).addConnection(rooms.get(index)); //connect the random connected neighbor to this room
+
+			rooms.get(currentRoom).addConnection(rooms.get(index)); // connect
+																	// the
+																	// random
+																	// connected
+																	// neighbor
+																	// to this
+																	// room
 			rooms.get(currentRoom).setConnected(true);
-					
+
 			found = false;
-					
+
 			allC = checkConnected(rooms);
 			System.out.println("\n" + allC);
 		}
-		endRoom = currentRoom;		
+		endRoom = currentRoom;
 		System.out.println("\n" + allC + " - all rooms connected");
 	}
-	//STEP 2 DONE-------------------------------------------------------------------------------------------
-	
-	//SEARCH FUNCTIONS--------------------------------------------------------------------------------------
-	//finds all the neighbours of the current room
-	public ArrayList<Room> findNs(int ID){ 
+
+	// STEP 2
+	// DONE-------------------------------------------------------------------------------------------
+
+	// SEARCH
+	// FUNCTIONS--------------------------------------------------------------------------------------
+	// finds all the neighbours of the current room
+	public ArrayList<Room> findNs(int ID) {
 		ArrayList<Room> neighbours = new ArrayList<Room>();
-		Room cur = rooms.get(ID);		
-		
-		//loop through all rooms, way better loop than simple for ones(no crazy index juggling)
-		for(Room rm : rooms){
-			Room temp = rm;  //for my peace of mind mainly -F
-			if(temp.getStartX() == cur.getStartX() + (map.getWidth()/roomBase) && (temp.getStartY() == cur.getStartY())){   //constraint to kep neighbors to 4(no diagonal)
+		Room cur = rooms.get(ID);
+
+		// loop through all rooms, way better loop than simple for ones(no crazy
+		// index juggling)
+		for (Room rm : rooms) {
+			Room temp = rm; // for my peace of mind mainly -F
+			if (temp.getStartX() == cur.getStartX()
+					+ (map.getWidth() / roomBase)
+					&& (temp.getStartY() == cur.getStartY())) { // constraint to
+																// kep neighbors
+																// to 4(no
+																// diagonal)
 				neighbours.add(temp);
 			}
-			
-			if(temp.getStartX() == cur.getStartX() - (map.getWidth()/roomBase) && (temp.getStartY() == cur.getStartY())){   //constraint to kep neighbors to 4
+
+			if (temp.getStartX() == cur.getStartX()
+					- (map.getWidth() / roomBase)
+					&& (temp.getStartY() == cur.getStartY())) { // constraint to
+																// kep neighbors
+																// to 4
 				neighbours.add(temp);
 			}
-			
-			else if(temp.getStartX() == cur.getStartX() && (temp.getStartY() == cur.getStartY() + (map.getHeight()/roomBase))){//needs change to detect y neighbors
+
+			else if (temp.getStartX() == cur.getStartX()
+					&& (temp.getStartY() == cur.getStartY()
+							+ (map.getHeight() / roomBase))) {// needs change to
+																// detect y
+																// neighbors
 				neighbours.add(temp);
 			}
-			
-			else if(temp.getStartX() == cur.getStartX() && (temp.getStartY() == cur.getStartY() - (map.getHeight()/roomBase))){
+
+			else if (temp.getStartX() == cur.getStartX()
+					&& (temp.getStartY() == cur.getStartY()
+							- (map.getHeight() / roomBase))) {
 				neighbours.add(temp);
 			}
 		}
-		
-		for(Room nb : neighbours){
-				System.out.println("Neighbor: " + nb.getID());
+
+		for (Room nb : neighbours) {
+			System.out.println("Neighbor: " + nb.getID());
 		}
-		
+
 		return neighbours;
 	}
-	
 
-	//checks if all elements in the list are connected
-	public boolean checkConnected(ArrayList<Room> rms){
+	// checks if all elements in the list are connected
+	public boolean checkConnected(ArrayList<Room> rms) {
 		boolean connected = true;
-		for(Room rm : rms){
-			if(!rm.isConnected()){
+		for (Room rm : rms) {
+			if (!rm.isConnected()) {
 				connected = false;
 			}
-		}	
+		}
 		return connected;
 	}
-	
-	//essential function to prevent a bug
-	public boolean hasConnectedNs(ArrayList<Room> ns){
+
+	// essential function to prevent a bug
+	public boolean hasConnectedNs(ArrayList<Room> ns) {
 		boolean nConnected = false;
-		for(Room nb : ns){
-			if(nb.isConnected()){
+		for (Room nb : ns) {
+			if (nb.isConnected()) {
 				nConnected = true;
 			}
-		}	
+		}
 		return nConnected;
 	}
-	
-	//SEARCH FUNCTIONS END-----------------------------------------------------------------------------------
-	
-	//MAP GENERATION FROM DATA-------------------------------------------------------------------------------
-	public void placeMap(){
-		//fill with walls
+
+	// SEARCH FUNCTIONS
+	// END-----------------------------------------------------------------------------------
+
+	// MAP GENERATION FROM
+	// DATA-------------------------------------------------------------------------------
+	public void placeMap() {
+		// fill with walls
 		Tile temp = new Tile("assets/data/spr_16x16Wall.png");
 		temp.setPassable(false);
-		for (int x=0; x<map.getWidth(); x++)
-		{
-			for (int y=0; y<map.getHeight(); y++)
-			{	
-				map.setTile(x, y,temp);
+		for (int x = 0; x < map.getWidth(); x++) {
+			for (int y = 0; y < map.getHeight(); y++) {
+				map.setTile(x, y, temp);
 			}
 		}
-		
-		
-		//draw edges - TRANSPARANT BACKGROUNDS ARE NOT TRANSPARANT.
-		//Tile edge = new Tile("assets/data/spr_16x16Edge.png");
-		/*for (int i=0; i<3; i++) //horizontally aligned rooms
-		{
-			for (int j=0; j<3; j++) //vertically aligned rooms
-			{
-				//top of each room
-				for (int k=1; k<10; k++)
-				{
-					int subroom_width=j*13*16;
-					int subroom_height=i*9*16;
-					map.setTile(subroom_width+16*k, subroom_height+0, edge);
-				}
-			}
-		}*/
-		//map.setTile(16, 0, edge);
-		
-		
-		//fill with empty(for now pre-determined 10x5) space, will be some semi-random size
+
+		// draw edges - TRANSPARANT BACKGROUNDS ARE NOT TRANSPARANT.
+		// Tile edge = new Tile("assets/data/spr_16x16Edge.png");
+		/*
+		 * for (int i=0; i<3; i++) //horizontally aligned rooms { for (int j=0;
+		 * j<3; j++) //vertically aligned rooms { //top of each room for (int
+		 * k=1; k<10; k++) { int subroom_width=j*13*16; int
+		 * subroom_height=i*9*16; map.setTile(subroom_width+16*k,
+		 * subroom_height+0, edge); } } }
+		 */
+		// map.setTile(16, 0, edge);
+
+		// fill with empty(for now pre-determined 10x5) space, will be some
+		// semi-random size
 		temp = new Tile("assets/data/spr_16x16Floor.png");
 		temp.setPassable(true);
-		for(Room rm : rooms){
-			for (int xp=1;xp<10;xp++) {
-				for (int yp=1;yp<5;yp++){
+		for (Room rm : rooms) {
+			for (int xp = 1; xp < 10; xp++) {
+				for (int yp = 1; yp < 5; yp++) {
 					map.setTile(rm.getStartX() + xp, rm.getStartY() + yp, temp);
-					
-					//set stairs tile
-					if(rm.getStartX() + xp == mapEndX && rm.getStartY() + yp == mapEndY){
-						map.setTile(rm.getStartX() + xp, rm.getStartY() + yp, new Tile("assets/data/spr_16x16Stairs.png"));
-						map.getTile(rm.getStartX() + xp, rm.getStartY() + yp).setPassable(true);
+
+					// set stairs tile
+					if (rm.getStartX() + xp == mapEndX
+							&& rm.getStartY() + yp == mapEndY) {
+						map.setTile(rm.getStartX() + xp, rm.getStartY() + yp,
+								new Tile("assets/data/spr_16x16Stairs.png"));
+						map.getTile(rm.getStartX() + xp, rm.getStartY() + yp)
+								.setPassable(true);
 					}
 				}
 			}
 		}
 	}
-	
-	//SET ENTRY/EXIT POINTS - FIRST AND LAST ROOMS WHEN GENERATING-----------
-	public void setPortals(){
+
+	// SET ENTRY/EXIT POINTS - FIRST AND LAST ROOMS WHEN GENERATING-----------
+	public void setPortals() {
 		setMapStartX();
 		setMapStartY();
 		setMapEndX();
 		setMapEndY();
 		System.out.println("PORTALS PLACED: " + mapStartX + " " + mapStartY);
 	}
-	
-	public void setMapStartX(){
+
+	public void setMapStartX() {
 		Room start = rooms.get(startRoom);
 		mapStartX = (start.getStartX() + start.getEndX()) / 2;
 	}
-	
-	public void setMapStartY(){
+
+	public void setMapStartY() {
 		Room start = rooms.get(startRoom);
 		mapStartY = (start.getStartY() + start.getEndY()) / 2;
 	}
-	
-	public void setMapEndX(){
+
+	public void setMapEndX() {
 		Room end = rooms.get(endRoom);
 		mapEndX = (end.getStartX() + end.getEndX()) / 2;
 	}
-	
-	public void setMapEndY(){
+
+	public void setMapEndY() {
 		Room end = rooms.get(endRoom);
 		mapEndY = (end.getStartY() + end.getEndY()) / 2;
 	}
-	//END PORTAL PLACEMENT------------------------------------------------------
-	
-	//PLACE CORRIDORS CONNECTING ROOMS(size of 1x1 for now)---------------------------------------
-	public void setCorridors(){
+
+	// END PORTAL
+	// PLACEMENT------------------------------------------------------
+
+	// PLACE CORRIDORS CONNECTING ROOMS(size of 1x1 for
+	// now)---------------------------------------
+	public void setCorridors() {
 		ArrayList<Room> connections = new ArrayList<Room>();
 		int corStartX, corEndX, corLength, corStartY, corEndY, temp;
-		
+
 		Tile square = new Tile("assets/data/spr_16x16Floor.png");
 		square.setPassable(true);
-		
-		//for each room connect
-		for(Room rm : rooms){
+
+		// for each room connect
+		for (Room rm : rooms) {
 			connections = rm.getConnections();
-			
-			
-			
-			for(Room con : connections){
-				//get x,y for the two rooms
-				corStartX = (rm.getStartX() + rm.getEndX())/2;
-				corEndX = (con.getStartX() + con.getEndX())/2;
-				
-				//System.out.println("room: "+rm+", connections: "+con);
-				
-				//since our coords are left to right, we change start-end, so that we do not bother filling right to left
-				if(corStartX > corEndX){
+
+			for (Room con : connections) {
+				// get x,y for the two rooms
+				corStartX = (rm.getStartX() + rm.getEndX()) / 2;
+				corEndX = (con.getStartX() + con.getEndX()) / 2;
+
+				// System.out.println("room: "+rm+", connections: "+con);
+
+				// since our coords are left to right, we change start-end, so
+				// that we do not bother filling right to left
+				if (corStartX > corEndX) {
 					temp = corStartX;
 					corStartX = corEndX;
 					corEndX = temp;
 				}
-				
-				corStartY = (rm.getStartY() + rm.getEndY())/2;
-				corEndY = (con.getStartY() + con.getEndY())/2;
-				
-				//again, fixing for our coordinate system
-				if(corStartY > corEndY){
+
+				corStartY = (rm.getStartY() + rm.getEndY()) / 2;
+				corEndY = (con.getStartY() + con.getEndY()) / 2;
+
+				// again, fixing for our coordinate system
+				if (corStartY > corEndY) {
 					temp = corStartY;
 					corStartY = corEndY;
 					corEndY = temp;
 				}
-				
-				//also checks not to overwrite stairs tile
-				//different x means neighbour is vertical(no diagonals)
-				if(corStartX != corEndX){
+
+				// also checks not to overwrite stairs tile
+				// different x means neighbour is vertical(no diagonals)
+				if (corStartX != corEndX) {
 					corLength = Math.abs(corStartX - corEndX);
-					for (int xp=0; xp<corLength; xp++) {
-						if(corStartX + xp != mapEndX || corStartY != mapEndY)
+					for (int xp = 0; xp < corLength; xp++) {
+						if (corStartX + xp != mapEndX || corStartY != mapEndY)
 							map.setTile(corStartX + xp, corStartY, square);
 					}
-					for (int xp=0; xp<corLength; xp++) {
-						if(corStartX + xp != mapEndX || corStartY -1 != mapEndY)
-							map.setTile(corStartX + xp, corStartY-1, square);
+					for (int xp = 0; xp < corLength; xp++) {
+						if (corStartX + xp != mapEndX
+								|| corStartY - 1 != mapEndY)
+							map.setTile(corStartX + xp, corStartY - 1, square);
 					}
 				}
-					
-				//different y means neighbour is horizontal(no diagonals)
-				else{
+
+				// different y means neighbour is horizontal(no diagonals)
+				else {
 					corLength = Math.abs(corStartY - corEndY);
-					for (int yp=0;yp<corLength;yp++){
-						if(corStartX != mapEndX || corStartY + yp != mapEndY)
-							map.setTile(corStartX, corStartY + yp, square);						
+					for (int yp = 0; yp < corLength; yp++) {
+						if (corStartX != mapEndX || corStartY + yp != mapEndY)
+							map.setTile(corStartX, corStartY + yp, square);
 					}
-					for (int yp=0;yp<corLength;yp++){
-						if(corStartX - 1 != mapEndX || corStartY + yp != mapEndY)
-							map.setTile(corStartX - 1, corStartY + yp, square);						
-					}		
-				}			
+					for (int yp = 0; yp < corLength; yp++) {
+						if (corStartX - 1 != mapEndX
+								|| corStartY + yp != mapEndY)
+							map.setTile(corStartX - 1, corStartY + yp, square);
+					}
+				}
 			}
 		}
 	}
-	
-	
-	
-	public MapGenerator(Map m){
+
+	public MapGenerator(Map m) {
 		map = m;
 	}
-	
-	public void spawnMonsters()
-	{
+
+	public void spawnMonsters() {
 		map.clearMonsterList();
-		
+
 		Random range = new Random();
-		
-		
+
 		Tile monster1 = new Tile("assets/data/Monsters/spr_16x16Monster1.png");
 		Tile monster2 = new Tile("assets/data/Monsters/spr_16x16Monster2.png");
 		Tile monster3 = new Tile("assets/data/Monsters/spr_16x16Monster3.png");
 		Tile bugfix = new Tile("assets/data/Monsters/spr_16x16Wall2.png");
-		
+
 		monster1.setPassable(true);
 		monster2.setPassable(true);
 		monster3.setPassable(true);
-		
-	
-		for (int x=0; x<map.getWidth(); x++)
-		{
-			for (int y=0; y<map.getHeight(); y++)
-			{
-				if (map.getTile(x, y).isPassable() && x != mapStartX && y != mapStartY)
-				{
-					if (range.nextInt(10) == 0)
-					{
+
+		for (int x = 0; x < map.getWidth(); x++) {
+			for (int y = 0; y < map.getHeight(); y++) {
+				if (map.getTile(x, y).isPassable()
+						&& (x != mapStartX && y != mapStartY)
+						&& (x != mapEndX && y != mapEndY)) {
+					if (range.nextInt(10) == 0) {
 						int spawn = range.nextInt(3);
-						
-						switch (spawn)
-						{
-						case 0: map.setTile(x, y, monster1); break;
-						case 1: map.setTile(x, y, monster2); break;
-						case 2: map.setTile(x, y, monster3); break;
-						default: map.setTile(x, y, bugfix); break; 
+
+						switch (spawn) {
+						case 0:
+							map.setTile(x, y, monster1);
+							break;
+						case 1:
+							map.setTile(x, y, monster2);
+							break;
+						case 2:
+							map.setTile(x, y, monster3);
+							break;
+						default:
+							map.setTile(x, y, bugfix);
+							break;
 						}
-						
-						Vector2 mon = new Vector2(x,y);
-						map.setMonsterList(mon);         
-						
+
+						Vector2 mon = new Vector2(x, y);
+						map.setMonsterList(mon);
+
 					}
 				}
 			}
 		}
 	}
-	
-	public void spawnItems()
-	{
+
+	public void spawnItems() {
 		map.clearItemList();
-		
+
 		Tile item = new Tile("assets/data/spr_16x16Item.png");
 		Random range = new Random();
-		
+
 		item.setPassable(true);
-		for (int x=0; x<map.getWidth(); x++)
-		{
-			for (int y=0; y<map.getHeight(); y++)
-			{
-				if (map.getTile(x, y).isPassable())
-				{
-					if (range.nextInt(60) == 0)
-					{
+		for (int x = 0; x < map.getWidth(); x++) {
+			for (int y = 0; y < map.getHeight(); y++) {
+				if (map.getTile(x, y).isPassable()) {
+					if (range.nextInt(60) == 0) {
 						map.setTile(x, y, item);
-						
-						Vector2 items = new Vector2(x,y);
-						map.setItemList(items);	
+
+						Vector2 items = new Vector2(x, y);
+						map.setItemList(items);
 					}
 				}
 			}
 		}
-	}	
-	
-	public Map generate(){
+	}
+
+	public Map generate() {
 		divMap(3);
 		connect();
 		setPortals();
@@ -440,18 +480,17 @@ public class MapGenerator {
 		setCorridors();
 		spawnMonsters();
 		spawnItems();
-		
-		
-		if(!Pathfinding.search(map, new Vector2(mapStartX, mapStartY), new Vector2(mapEndX, mapEndY))){
+
+		if (!Pathfinding.search(map, new Vector2(mapStartX, mapStartY),
+				new Vector2(mapEndX, mapEndY))) {
 			return this.generate();
-		}
-		else {
+		} else {
 			return map;
 		}
 	}
-	
-	public static void main(String[] args){
-		MapGenerator mp = new MapGenerator(new Map(42,24,16,16));
+
+	public static void main(String[] args) {
+		MapGenerator mp = new MapGenerator(new Map(42, 24, 16, 16));
 		mp.generate();
 	}
 

@@ -4,10 +4,18 @@ import java.util.ArrayList;
 
 import inf1.oop.turnbased.ServiceProvider;
 import inf1.oop.turnbased.TurnBasedGame;
+import inf1.oop.turnbased.combat.Battle;
+import inf1.oop.turnbased.combat.BattleEndCondition;
+import inf1.oop.turnbased.combat.BattleEndListener;
+import inf1.oop.turnbased.combat.Stats;
+import inf1.oop.turnbased.entity.Entity;
 import inf1.oop.turnbased.graphics.MapRenderer;
 import inf1.oop.turnbased.graphics.RenderingParameters;
 import inf1.oop.turnbased.map.Map;
 import inf1.oop.turnbased.map.MapGenerator;
+import inf1.oop.turnbased.map.Tile;
+import inf1.oop.turnbased.combat.CombatEntity;
+import inf1.oop.turnbased.combat.DeathEventListener;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -40,8 +48,7 @@ public class MapScreen implements Screen {
 	int map_pixelwidth=map_width*tile_size; 	//map width in pixels
 	
 	//Player Data
-	int player_x=0; 	//player x-position in px
-	int player_y=0; 	//yplayer y-position in px
+	private Entity player;
 	int stairX, stairY;
 	
 	Texture playerS;	//player sprite
@@ -49,14 +56,16 @@ public class MapScreen implements Screen {
 	RenderingParameters renderParams;
 	
 
+	private TurnBasedGame game;
 	
-	
+	private final Tile blankTile;
 	
 	//x,y to draw map at
 	float xShift = 0;
 	float yShift = 0;
 	
 	public MapScreen(TurnBasedGame game) {
+		this.game = game;
 		this.services = game.getServices();		
 		assets = services.get(AssetManager.class);
 		
@@ -81,6 +90,9 @@ public class MapScreen implements Screen {
 		//	playerS = assets.get("assets/data/PlayerSprite/StandLeft.png");
 		//}
 		
+		blankTile = new Tile("assets/data/spr_16x16Floor.png");
+		blankTile.setPassable(true);
+		
 	}
 
 	
@@ -90,8 +102,10 @@ public class MapScreen implements Screen {
 		renderer.setMap(generator.generate());
 		
 		//spawn x, y
-		player_x = generator.getMapStartX() * 16;
-		player_y = generator.getMapStartY() * 16;
+		int x = generator.getMapStartX() * 16;
+		int y= generator.getMapStartY() * 16;
+		
+		player = new Entity(x,y, "player");
 		
 		//stair to next floor
 		stairX = generator.getMapEndX();
@@ -105,7 +119,7 @@ public class MapScreen implements Screen {
 			
 				playerS = assets.get("assets/data/PlayerSprite/StandLeft.png");
 				
-				if (0 < player_x %16 && player_x %16 <8) {					
+				if (0 < player.getX() %16 && player.getX() %16 <8) {					
 					playerS = assets.get("assets/data/PlayerSprite/StepLeftRight.png");
 				} else {
 					playerS = assets.get("assets/data/PlayerSprite/StepLeftLeft.png");
@@ -118,7 +132,7 @@ public class MapScreen implements Screen {
 			
 			playerS = assets.get("assets/data/PlayerSprite/StandRight.png");
 			
-			if (0 < player_x %16 && player_x %16 <8) {				
+			if (0 < player.getX() %16 && player.getX() %16 <8) {				
 				playerS = assets.get("assets/data/PlayerSprite/StepRightRight.png");
 			} else {
 				playerS = assets.get("assets/data/PlayerSprite/StepRightLeft.png");
@@ -130,7 +144,7 @@ public class MapScreen implements Screen {
 				
 				playerS = assets.get("assets/data/PlayerSprite/StandBack.png");		
 				
-				if (0 < player_y %16 && player_y %16 <8) {					
+				if (0 < player.getY() %16 && player.getY() %16 <8) {					
 					playerS = assets.get("assets/data/PlayerSprite/StepBackRight.png");
 				} else {
 					playerS = assets.get("assets/data/PlayerSprite/StepBackLeft.png");
@@ -142,7 +156,7 @@ public class MapScreen implements Screen {
 			
 			playerS = assets.get("assets/data/PlayerSprite/Stand.png");
 			
-			if (0 < player_y %16 && player_y %16 <8) {
+			if (0 < player.getY() %16 && player.getY() %16 <8) {
 				playerS = assets.get("assets/data/PlayerSprite/StepForwardRight.png");
 			} else {
 				playerS = assets.get("assets/data/PlayerSprite/StepForwardLeft.png");
@@ -161,16 +175,32 @@ public class MapScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		renderer.draw(xShift,yShift);
-	    batch.draw(playerS, xOffset + player_x, yOffset  + player_y);
+	    batch.draw(playerS, xOffset + player.getX(), yOffset  + player.getY());
 	    batch.end();
 		
 		
 		
 	}
 
-
+	private BattleEndListener generateBattleWatcher(final Vector2 monster) {	
+		return new BattleEndListener() {
+			private Vector2 mon = monster;
+			@Override
+			public void onBattleEnd(BattleEndCondition cond){
+				switch(cond) {
+				case LOSE:
+					// trigger game over
+					break;
+				default: // WIN and FLEE
+					map.setTile((int)mon.x, (int)mon.y, blankTile);
+					map.removeMonster(mon);
+					break;
+				}
+			}
+		};
+	}
 	
-	//NOTE: I am not offseting player_x, y itself in order to make the processing of the array less of a hassle -F
+	//NOTE: I am not offseting player.getX(), y itself in order to make the processing of the array less of a hassle -F
 	
 	public void update(float dt) {
 		//------------------------------------------------------
@@ -180,7 +210,7 @@ public class MapScreen implements Screen {
 		
 		//PLAYER MOVEMENT USING ARROW KEYS	
 		// check if player is at stairs x,y
-		if((player_x+8)/16 == stairX && (player_y+8)/16 == stairY){
+		if((player.getX()+8)/16 == stairX && (player.getY()+8)/16 == stairY){
 			spawn();
 		}
 		
@@ -190,29 +220,37 @@ public class MapScreen implements Screen {
 		}
 		
 		//collision with monster
-		ArrayList<Vector2> tuna = map.getMonsterList();
-		for (Vector2 monster : tuna)
+		ArrayList<Vector2> monsters = map.getMonsterList();
+		for (Vector2 monster : monsters)
 		{
-			if ((player_x+8)/16 == monster.x && (player_y+8)/16 == monster.y)
-			//if ((player_x)/16 == monster.x && (player_y)/16 == monster.y)
+			if ((player.getX()+8)/16 == monster.x && (player.getY()+8)/16 == monster.y)
+			//if ((player.getX())/16 == monster.x && (player.getY())/16 == monster.y)
 				{
 					//collision
 					System.out.println("COLLIIIIISION with monster !!! QEWTQWETIPOUQETOPIUY!OH#@N$FGV&Y#!!#()*%");
-					System.out.println("player_x/16 = "+(player_x+8)/16+", player_y/16 = "+(player_y+8)/16+" || monster.x = "+ monster.x + ", monster.y = "+monster.y); 
+					System.out.println("player.getX()/16 = "+(player.getX()+8)/16+", player.getY()/16 = "+(player.getY()+8)/16+" || monster.x = "+ monster.x + ", monster.y = "+monster.y);
+					
+					CombatEntity mon = new CombatEntity(100, 100, new Stats());
+					
+					Battle battle = new Battle(player.getCombatEntity(), mon);
+					
+					battle.addBattleEndListener(this.generateBattleWatcher(monster));
+					
+					game.setScreen(new CombatScreen(game, battle, player.getCombatEntity(), mon, this));
 				}
 		}
 		
 		
 		//collision with item
-		ArrayList<Vector2> tuna2 = map.getItemList();
-		for (Vector2 item : tuna2)
+		ArrayList<Vector2> items = map.getItemList();
+		for (Vector2 item : items)
 		{
-			if ((player_x+8)/16 == item.x && (player_y+8)/16 == item.y)
-			//if ((player_x)/16 == item.x && (player_y)/16 == item.y)	
+			if ((player.getX()+8)/16 == item.x && (player.getY()+8)/16 == item.y)
+			//if ((player.getX())/16 == item.x && (player.getY())/16 == item.y)	
 				{
 					//collision
 					System.out.println("COLLIIIIISION with item !!! QEWTQWETIPOUQETOPIUY!OH#@N$FGV&Y#!!#()*%");
-					System.out.println("player_x/16 = "+(player_x+8)/16+", player_y/16 = "+(player_y+8)/16+" || monster.x = "+ item.x + ", monster.y = "+item.y); 
+					System.out.println("player.getX()/16 = "+(player.getX()+8)/16+", player.getY()/16 = "+(player.getY()+8)/16+" || monster.x = "+ item.x + ", monster.y = "+item.y); 
 				}
 		}
 		
@@ -222,13 +260,13 @@ public class MapScreen implements Screen {
 			
 		{
 			steps();
-			if (player_x + xShift > xShift)
+			if (player.getX() + xShift > xShift)
 			{
-				player_x -= 1; 	//consider using delta and f values -F
-				System.out.println("player_x: "+player_x + "_" + player_x/16 + "_" + player_y/16);
+				player.setX(player.getX() - 1); 	//consider using delta and f values -F
+				System.out.println("player.getX(): "+player.getX() + "_" + player.getX()/16 + "_" + player.getY()/16);
 				//this kind of detection avoids exceptions at boundaries with no handling
-				if(!map.getTile(player_x/16, player_y/16).isPassable() || !map.getTile(player_x/16, (player_y+16)/16).isPassable()){ //check both corners
-					player_x += 1;
+				if(!map.getTile(player.getX()/16, player.getY()/16).isPassable() || !map.getTile(player.getX()/16, (player.getY()+16)/16).isPassable()){ //check both corners
+					player.setX(player.getX() + 1);  
 				}
 			}
 		} //take away the println parts when working.
@@ -237,12 +275,12 @@ public class MapScreen implements Screen {
 		else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) 
 		{
 			steps();
-			if (player_x + 16 + xShift < xShift + map_pixelwidth) //there is a +16 adjustment to playerX since detection point is bottom left
+			if (player.getX() + 16 + xShift < xShift + map_pixelwidth) //there is a +16 adjustment to playerX since detection point is bottom left
 			{
-				player_x += 1; 
-				System.out.println("player_x: "+player_x+ "_" + player_x/16 + "_" + player_y/16 );
-				if(!map.getTile((player_x+16)/16, player_y/16).isPassable() || !map.getTile((player_x+16)/16, (player_y+16)/16).isPassable()){
-					player_x -= 1;
+				player.setX(player.getX() + 1);  
+				System.out.println("player.getX(): "+player.getX()+ "_" + player.getX()/16 + "_" + player.getY()/16 );
+				if(!map.getTile((player.getX()+16)/16, player.getY()/16).isPassable() || !map.getTile((player.getX()+16)/16, (player.getY()+16)/16).isPassable()){
+					player.setX(player.getX() - 1); 
 				}
 			}
 		}
@@ -252,12 +290,12 @@ public class MapScreen implements Screen {
 		{			
 			steps();
 			
-			if (player_y + 16 + yShift < yShift + map_pixelheight)
+			if (player.getY() + 16 + yShift < yShift + map_pixelheight)
 			{
-				player_y += 1; 
-				System.out.println("player_y: "+player_y+ "_" + player_x/16 + "_" + player_y/16);
-				if(!map.getTile(player_x/16, (player_y+16)/16).isPassable() || !map.getTile((player_x+16)/16, (player_y+16)/16).isPassable()){
-					player_y -= 1;
+				player.setY(player.getY() + 1); 
+				System.out.println("player.getY(): "+player.getY()+ "_" + player.getX()/16 + "_" + player.getY()/16);
+				if(!map.getTile(player.getX()/16, (player.getY()+16)/16).isPassable() || !map.getTile((player.getX()+16)/16, (player.getY()+16)/16).isPassable()){
+					player.setY(player.getY() - 1); 
 				}
 			}
 				
@@ -268,12 +306,12 @@ public class MapScreen implements Screen {
 		{
 			steps();
 
-			if (player_y + yShift> yShift)
+			if (player.getY() + yShift> yShift)
 			{
-				player_y -= 1; 
-				System.out.println("player_y: "+player_y+ "_" + player_x/16 + "_" + player_y/16 );
-				if(!map.getTile(player_x/16, player_y/16).isPassable() || !map.getTile((player_x+16)/16, player_y/16).isPassable()){
-					player_y += 1;
+				player.setY(player.getY() - 1); 
+				System.out.println("player.getY(): "+player.getY()+ "_" + player.getX()/16 + "_" + player.getY()/16 );
+				if(!map.getTile(player.getX()/16, player.getY()/16).isPassable() || !map.getTile((player.getX()+16)/16, player.getY()/16).isPassable()){
+					player.setY(player.getY() + 1); 
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-package inf1.oop.turnbased.entity;
+/*package inf1.oop.turnbased.entity;
 
 //In order to prevent id collisions when adding new items later on, indexed them as follows:
 //M.Weapon ID: 	100-149 (main hand)
@@ -21,7 +21,7 @@ public class EquipItem {
 		ItemDatabase item = new ItemDatabase(id);
 		if (equip == 1)
 		{
-			player.addTotalHealth(item.getBonusHp());
+			player.increaseMaxHp(item.getBonusHp());
 			player.setDamage(item.getBonusDmg());
 			player.setArmor(item.getBonusDef());
 			
@@ -62,7 +62,7 @@ public class EquipItem {
 		else
 		{
 			//unequip item
-			player.addTotalHealth(-item.getBonusHp());
+			player.reduceMaxHp(item.getBonusHp());
 			player.setDamage(-item.getBonusDmg());
 			player.setArmor(-item.getBonusDef());
 			
@@ -108,4 +108,4 @@ public class EquipItem {
 
 	
 	
-}
+}*/
