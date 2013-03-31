@@ -2,6 +2,7 @@ package inf1.oop.turnbased.screen;
 
 import java.util.ArrayList;
 
+import inf1.oop.turnbased.AngryAudio;
 import inf1.oop.turnbased.ServiceProvider;
 import inf1.oop.turnbased.TurnBasedGame;
 import inf1.oop.turnbased.combat.Battle;
@@ -237,6 +238,8 @@ public class MapScreen implements Screen {
 					battle.addBattleEndListener(this.generateBattleWatcher(monster));
 					
 					game.setScreen(new CombatScreen(game, battle, player.getCombatEntity(), mon, this));
+					
+					AngryAudio.shoot();
 				}
 		}
 		

@@ -1,5 +1,6 @@
 package inf1.oop.turnbased;
 
+
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -11,6 +12,7 @@ public class Main {
 		cfg.width = 672;
 		cfg.height = 378;
 		cfg.vSyncEnabled = true;
+	
 		
 		new LwjglApplication(new TurnBasedGame(), cfg);
 		//test

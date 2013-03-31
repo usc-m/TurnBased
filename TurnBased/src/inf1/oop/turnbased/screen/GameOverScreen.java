@@ -80,7 +80,7 @@ public class GameOverScreen implements Screen {
 				game.setScreen(new MapScreen(game));
 			}
 		});
-		
+
 		LabelStyle ls = new LabelStyle(white, Color.WHITE);
 		label = new Label("GAME OVER", ls);
 		label.setX(0);
