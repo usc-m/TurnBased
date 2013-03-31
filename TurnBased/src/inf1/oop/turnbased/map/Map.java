@@ -17,6 +17,7 @@ public class Map {
 	int tileWidth, tileHeight;
 	
 	private ArrayList<Vector2> monsters = new ArrayList<Vector2>();
+	private ArrayList<Vector2> items = new ArrayList<Vector2>();
 	
 	public Map(int width, int height, int tWidth, int tHeight) {
 		this.width = width;
@@ -75,4 +76,16 @@ public class Map {
 	{
 		return monsters;
 	}
+	
+	public void setItemList(Vector2 item)
+	{
+		this.monsters.add(item);
+	}
+	
+	public ArrayList<Vector2> getItemList()
+	{
+		return items;
+	}
+	
+	
 }
