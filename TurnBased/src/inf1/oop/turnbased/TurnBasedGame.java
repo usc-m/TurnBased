@@ -62,6 +62,20 @@ public class TurnBasedGame extends Game implements ApplicationListener {
 		 assets.load("assets/data/spr_16x16Edge.png", Texture.class);  
 		 assets.load("assets/data/spr_16x16Floor.png", Texture.class);
 		 assets.load("assets/data/spr_16x16Stairs.png", Texture.class);
+		 //My apologies this part is messy. Couldn't work out how to do it from one image...
+		 assets.load("assets/data/PlayerSprite/Stand.png", Texture.class);
+		 assets.load("assets/data/PlayerSprite/StandBack.png", Texture.class);
+		 assets.load("assets/data/PlayerSprite/StandLeft.png", Texture.class);
+		 assets.load("assets/data/PlayerSprite/StandRight.png", Texture.class);
+		 assets.load("assets/data/PlayerSprite/StepBackLeft.png", Texture.class);
+		 assets.load("assets/data/PlayerSprite/StepBackRight.png", Texture.class);
+		 assets.load("assets/data/PlayerSprite/StepForwardLeft.png", Texture.class);
+		 assets.load("assets/data/PlayerSprite/StepForwardRight.png", Texture.class);
+		 assets.load("assets/data/PlayerSprite/StepLeftLeft.png", Texture.class);
+		 assets.load("assets/data/PlayerSprite/StepLeftRight.png", Texture.class);
+		 assets.load("assets/data/PlayerSprite/StepRightLeft.png", Texture.class);
+		 assets.load("assets/data/PlayerSprite/StepRightRight.png", Texture.class);
+
 		 assets.finishLoading();
 		  
 		//comment out respectively to enter map/menu screen, for now 

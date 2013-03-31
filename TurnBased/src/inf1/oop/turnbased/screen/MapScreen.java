@@ -41,7 +41,6 @@ public class MapScreen extends Screen {
 	int player_y=0; 	//yplayer y-position in px
 	int stairX, stairY;
 	Texture playerS;	//player sprite
-	
 	//global rendering parameters
 	RenderingParameters renderParams;
 	
@@ -69,7 +68,11 @@ public class MapScreen extends Screen {
 		spawn();
 		
 		//player sprite
-		playerS = assets.get("assets/data/spr_Player.png");
+		playerS = assets.get("assets/data/PlayerSprite/Stand.png");
+		//if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+		//	playerS = assets.get("assets/data/PlayerSprite/StandLeft.png");
+		//}
+		
 	}
 	
 	
@@ -87,6 +90,58 @@ public class MapScreen extends Screen {
 		stairY = generator.getMapEndY();
 	}
 	
+	public void steps(){
+		
+		//LEFT WALKING
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+			
+				playerS = assets.get("assets/data/PlayerSprite/StandLeft.png");
+				
+				if (0 < player_x %16 && player_x %16 <8) {					
+					playerS = assets.get("assets/data/PlayerSprite/StepLeftRight.png");
+				} else {
+					playerS = assets.get("assets/data/PlayerSprite/StepLeftLeft.png");
+				}
+				
+				
+		//RIGHT WALKING
+		} else if 
+			 (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+			
+			playerS = assets.get("assets/data/PlayerSprite/StandRight.png");
+			
+			if (0 < player_x %16 && player_x %16 <8) {				
+				playerS = assets.get("assets/data/PlayerSprite/StepRightRight.png");
+			} else {
+				playerS = assets.get("assets/data/PlayerSprite/StepRightLeft.png");
+			}
+			
+		//UP WALKING	
+			} else if 
+			 (Gdx.input.isKeyPressed(Input.Keys.UP)){
+				
+				playerS = assets.get("assets/data/PlayerSprite/StandBack.png");		
+				
+				if (0 < player_y %16 && player_y %16 <8) {					
+					playerS = assets.get("assets/data/PlayerSprite/StepBackRight.png");
+				} else {
+					playerS = assets.get("assets/data/PlayerSprite/StepBackLeft.png");
+				}
+				
+		//DOWN WALKING		
+		} else if 
+		 (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+			
+			playerS = assets.get("assets/data/PlayerSprite/Stand.png");
+			
+			if (0 < player_y %16 && player_y %16 <8) {
+				playerS = assets.get("assets/data/PlayerSprite/StepForwardRight.png");
+			} else {
+				playerS = assets.get("assets/data/PlayerSprite/StepForwardLeft.png");
+			}
+		} 
+	}
+
 	@Override
 	public void draw(float dt) {
 		//bring coordinates for player bottom-lef, like in the map renderer
@@ -129,7 +184,9 @@ public class MapScreen extends Screen {
 		
 		//moving left
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) 
+			
 		{
+			steps();
 			if (player_x + xShift > xShift)
 			{
 				player_x -= 1; 	//consider using delta and f values -F
@@ -144,6 +201,7 @@ public class MapScreen extends Screen {
 		//moving right
 		else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) 
 		{
+			steps();
 			if (player_x + 16 + xShift < xShift + map_pixelwidth) //there is a +16 adjustment to playerX since detection point is bottom left
 			{
 				player_x += 1; 
@@ -156,7 +214,9 @@ public class MapScreen extends Screen {
 			
 		//moving up
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) 
-		{
+		{			
+			steps();
+			
 			if (player_y + 16 + yShift < yShift + map_pixelheight)
 			{
 				player_y += 1; 
@@ -165,11 +225,14 @@ public class MapScreen extends Screen {
 					player_y -= 1;
 				}
 			}
+				
 		}
 			
 		//moving down
 		else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) 
 		{
+			steps();
+
 			if (player_y + yShift> yShift)
 			{
 				player_y -= 1; 
@@ -179,10 +242,20 @@ public class MapScreen extends Screen {
 				}
 			}
 		}
+		
+		
 	}
 		//IMPORTANT -> margin_bottom and margin_left must come from the map-drawing code above.
 		//do not make separate variables with the same definition, important when putting these blocks in external classes.
 		//ie. load from the same .json file as from the "DRAW MAP" block above
 		//------------------------------------------------------
 
+
+	private void Delay(int i) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	
 }
