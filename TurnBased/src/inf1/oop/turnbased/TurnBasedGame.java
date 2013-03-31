@@ -5,7 +5,6 @@ import inf1.oop.turnbased.graphics.RenderingParameters;
 import inf1.oop.turnbased.map.Map;
 import inf1.oop.turnbased.screen.MainMenu;
 import inf1.oop.turnbased.screen.MapScreen;
-import inf1.oop.turnbased.screen.Screen;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
@@ -27,8 +26,6 @@ public class TurnBasedGame extends Game implements ApplicationListener {
 	private ServiceProvider services;
 	private RenderingParameters renderParams;
 	
-	private Screen currentScreen; // TODO: Make a proper screen manager so we don't have to handle that in the main class
-	
 	//Michelle's stuff
 	public static final String VERSION = "0.0.0.02 Pre-Alpha";
 	public static final String LOG = "Turn-Based Game";
@@ -38,7 +35,7 @@ public class TurnBasedGame extends Game implements ApplicationListener {
 	
 	@Override
 	public void create() {
-		log = new FPSLogger();
+		//log = new FPSLogger();
 		
 		 float w = Gdx.graphics.getWidth();
 		 float h = Gdx.graphics.getHeight();
@@ -84,8 +81,7 @@ public class TurnBasedGame extends Game implements ApplicationListener {
 		 assets.finishLoading();
 		  
 		//comment out respectively to enter map/menu screen, for now 
-		currentScreen = new MapScreen(services);
-		//setScreen(new MainMenu(this));
+		setScreen(new MainMenu(this));
 	}
 
 	@Override
@@ -97,13 +93,10 @@ public class TurnBasedGame extends Game implements ApplicationListener {
 	@Override
 	public void render() {
 		//comment out for Menu
-		float dt = Gdx.graphics.getDeltaTime(); // this is the number of seconds since last frame (so a value of 1 would be 1 second, but 0.5 would be 500 milliseconds)
-		currentScreen.update(dt);
-		currentScreen.draw(dt);
 		//---------------------------------------
 		
 		//comment out for Map
-		//super.render();
+		super.render();
 		//log.log();
 	}
 
@@ -120,5 +113,9 @@ public class TurnBasedGame extends Game implements ApplicationListener {
 	@Override
 	public void resume() {
 		super.resume();
+	}
+
+	public ServiceProvider getServices() {
+		return services;
 	}
 }

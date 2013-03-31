@@ -87,5 +87,13 @@ public class Map {
 		return items;
 	}
 	
+	public void clearMonsterList() {
+		monsters.clear();
+	}
+	
+	public void clearItemList() {
+		items.clear();
+	}
+	
 	
 }

@@ -364,6 +364,7 @@ public class MapGenerator {
 	
 	public void spawnMonsters()
 	{
+		map.clearMonsterList();
 		
 		Random range = new Random();
 		
@@ -408,6 +409,8 @@ public class MapGenerator {
 	
 	public void spawnItems()
 	{
+		map.clearItemList();
+		
 		Tile item = new Tile("assets/data/spr_16x16Item.png");
 		Random range = new Random();
 		

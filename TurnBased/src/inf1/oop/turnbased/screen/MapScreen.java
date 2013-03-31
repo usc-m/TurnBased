@@ -3,15 +3,14 @@ package inf1.oop.turnbased.screen;
 import java.util.ArrayList;
 
 import inf1.oop.turnbased.ServiceProvider;
-import inf1.oop.turnbased.entity.Entity;
+import inf1.oop.turnbased.TurnBasedGame;
 import inf1.oop.turnbased.graphics.MapRenderer;
 import inf1.oop.turnbased.graphics.RenderingParameters;
 import inf1.oop.turnbased.map.Map;
 import inf1.oop.turnbased.map.MapGenerator;
-import inf1.oop.turnbased.map.Room;
-import inf1.oop.turnbased.map.Tile;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
@@ -21,9 +20,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-
-
-public class MapScreen extends Screen {
+public class MapScreen implements Screen {
 	
 	ServiceProvider services;
 	SpriteBatch batch;
@@ -59,9 +56,9 @@ public class MapScreen extends Screen {
 	float xShift = 0;
 	float yShift = 0;
 	
-	public MapScreen(ServiceProvider services) {
+	public MapScreen(TurnBasedGame game) {
+		this.services = game.getServices();		
 		assets = services.get(AssetManager.class);
-		this.services = services;
 		
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
@@ -153,7 +150,6 @@ public class MapScreen extends Screen {
 		} 
 	}
 
-	@Override
 	public void draw(float dt) {
 		//bring coordinates for player bottom-lef, like in the map renderer
 		float xOffset = renderParams.getXOffset() + xShift;
@@ -176,7 +172,6 @@ public class MapScreen extends Screen {
 	
 	//NOTE: I am not offseting player_x, y itself in order to make the processing of the array less of a hassle -F
 	
-	@Override
 	public void update(float dt) {
 		//------------------------------------------------------
 		/* ####################################################### *
@@ -290,7 +285,51 @@ public class MapScreen extends Screen {
 		//------------------------------------------------------
 
 
-	private void Delay(int i) {
+	@Override
+	public void render(float delta) {
+		this.update(delta);
+		this.draw(delta);
+		
+	}
+
+
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void dispose() {
 		// TODO Auto-generated method stub
 		
 	}
