@@ -391,14 +391,29 @@ public class MapGenerator {
 						
 						switch (spawn)
 						{
-							case 0: map.setTile(x, y, monster1); break;
-							case 1: map.setTile(x, y, monster2); break;
-							case 2: map.setTile(x, y, monster3); break;
-							case 3: map.setTile(x, y, bugfix); break;
+							case 0: 
+								map.setTile(x, y, monster1); 
+								Vector2 mon1 = new Vector2(x,y);
+								map.setMonsterList(mon1);		
+							break;
+							
+							case 1: map.setTile(x, y, monster2); 
+								Vector2 mon2 = new Vector2(x,y);
+								map.setMonsterList(mon2);	
+							break;
+							
+							case 2: map.setTile(x, y, monster3); 
+								Vector2 mon3 = new Vector2(x,y);
+								map.setMonsterList(mon3);	
+							break;
+							
+							default: map.setTile(x, y, bugfix); //bugfixing matters
+								Vector2 mon4 = new Vector2(x,y);
+								map.setMonsterList(mon4);							
+							break;
 						}
 						
-						Vector2 mon = new Vector2(x,y);
-						map.setMonsterList(mon);				
+		
 						
 						
 					}

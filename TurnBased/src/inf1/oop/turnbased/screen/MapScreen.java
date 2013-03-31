@@ -193,12 +193,12 @@ public class MapScreen implements Screen {
 		ArrayList<Vector2> tuna = map.getMonsterList();
 		for (Vector2 monster : tuna)
 		{
-			//if ((player_x+8)/16 == monster.x && (player_y+8)/16 == monster.y)
-			if ((player_x)/16 == monster.x && (player_y)/16 == monster.y)
+			if ((player_x+8)/16 == monster.x && (player_y+8)/16 == monster.y)
+			//if ((player_x)/16 == monster.x && (player_y)/16 == monster.y)
 				{
 					//collision
 					System.out.println("COLLIIIIISION with monster !!! QEWTQWETIPOUQETOPIUY!OH#@N$FGV&Y#!!#()*%");
-					System.out.println("player_x/16 = "+player_x/16+", player_y/16 = "+player_y/16+" || monster.x = "+ monster.x + ", monster.y = "+monster.y); 
+					System.out.println("player_x/16 = "+(player_x+8)/16+", player_y/16 = "+(player_y+8)/16+" || monster.x = "+ monster.x + ", monster.y = "+monster.y); 
 				}
 		}
 		
@@ -207,12 +207,12 @@ public class MapScreen implements Screen {
 		ArrayList<Vector2> tuna2 = map.getItemList();
 		for (Vector2 item : tuna2)
 		{
-			//if ((player_x+8)/16 == item.x && (player_y+8)/16 == item.y)
-			if ((player_x)/16 == item.x && (player_y)/16 == item.y)	
+			if ((player_x+8)/16 == item.x && (player_y+8)/16 == item.y)
+			//if ((player_x)/16 == item.x && (player_y)/16 == item.y)	
 				{
 					//collision
 					System.out.println("COLLIIIIISION with item !!! QEWTQWETIPOUQETOPIUY!OH#@N$FGV&Y#!!#()*%");
-					System.out.println("player_x/16 = "+player_x/16+", player_y/16 = "+player_y/16+" || monster.x = "+ item.x + ", monster.y = "+item.y); 
+					System.out.println("player_x/16 = "+(player_x+8)/16+", player_y/16 = "+(player_y+8)/16+" || monster.x = "+ item.x + ", monster.y = "+item.y); 
 				}
 		}
 		
