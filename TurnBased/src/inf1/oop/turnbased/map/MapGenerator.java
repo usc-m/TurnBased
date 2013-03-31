@@ -373,6 +373,8 @@ public class MapGenerator {
 		monster2.setPassable(true);
 		monster3.setPassable(true);
 		
+		int num_monster=0;
+		
 		for (int x=0; x<map.getWidth(); x++)
 		{
 			for (int y=0; y<map.getHeight(); y++)
@@ -382,12 +384,16 @@ public class MapGenerator {
 					if (range.nextInt(10) == 0)
 					{
 						int spawn = range.nextInt(2);
+						
 						switch (spawn)
 						{
-						case 1: map.setTile(x, y, monster1); break;
-						case 2: map.setTile(x, y, monster2); break;
-						case 3: map.setTile(x, y, monster3); break;
+							case 1: map.setTile(x, y, monster1); break;
+							case 2: map.setTile(x, y, monster2); break;
+							case 3: map.setTile(x, y, monster3); break;
 						}
+						
+						Vector2 mon = new Vector2(x,y);
+						map.setMonsterList(mon);				
 						
 						
 					}

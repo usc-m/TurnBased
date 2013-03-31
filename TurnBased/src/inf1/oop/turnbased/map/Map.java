@@ -1,5 +1,9 @@
 package inf1.oop.turnbased.map;
 
+import java.util.ArrayList;
+
+import com.badlogic.gdx.math.Vector2;
+
 /*
  * This class describes maps, containing information about what the terrain is like
  * things that appear on the map and operations that apply to maps, such as 
@@ -11,6 +15,8 @@ public class Map {
 	int height;
 	
 	int tileWidth, tileHeight;
+	
+	private ArrayList<Vector2> monsters = new ArrayList<Vector2>();
 	
 	public Map(int width, int height, int tWidth, int tHeight) {
 		this.width = width;
@@ -58,5 +64,15 @@ public class Map {
 		else{
 			return tileGrid[x][y];
 		}
+	}
+	
+	public void setMonsterList(Vector2 monster)
+	{
+		this.monsters.add(monster);
+	}
+	
+	public ArrayList<Vector2> getMonsterList()
+	{
+		return monsters;
 	}
 }

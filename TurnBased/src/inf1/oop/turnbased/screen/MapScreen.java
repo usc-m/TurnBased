@@ -1,5 +1,7 @@
 package inf1.oop.turnbased.screen;
 
+import java.util.ArrayList;
+
 import inf1.oop.turnbased.ServiceProvider;
 import inf1.oop.turnbased.graphics.MapRenderer;
 import inf1.oop.turnbased.graphics.RenderingParameters;
@@ -16,6 +18,9 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+
+
 
 public class MapScreen extends Screen {
 	
@@ -43,6 +48,8 @@ public class MapScreen extends Screen {
 	Texture playerS;	//player sprite
 	//global rendering parameters
 	RenderingParameters renderParams;
+	
+	
 	
 	//x,y to draw map at
 	float xShift = 0;
@@ -75,6 +82,7 @@ public class MapScreen extends Screen {
 		
 	}
 	
+
 	
 	//spawns the player and the map(maybe enemies later) -F
 	public void spawn(){
@@ -179,6 +187,31 @@ public class MapScreen extends Screen {
 		//testing generation
 		if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
 			spawn();
+		}
+		
+		//collision with monster
+		ArrayList<Vector2> tuna = map.getMonsterList();
+		for (Vector2 monster : tuna)
+		{
+			if (player_x/16 == monster.x && player_y/16 == monster.y)
+				{
+					//collision
+					System.out.println("COLLIIIIISION with monster !!! QEWTQWETIPOUQETOPIUY!OH#@N$FGV&Y#!!#()*%");
+				}
+		}
+		
+		
+		//collision with item
+		//collision with monster
+		ArrayList<Vector2> tuna2 = map.getMonsterList();
+		for (Vector2 monster : tuna2)
+		{
+			if (player_x/16 == monster.x && player_y/16 == monster.y)
+				{
+					//collision
+					System.out.println("COLLIIIIISION with item !!! QEWTQWETIPOUQETOPIUY!OH#@N$FGV&Y#!!#()*%");
+					
+				}
 		}
 		
 		
