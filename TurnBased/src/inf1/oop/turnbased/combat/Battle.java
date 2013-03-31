@@ -8,6 +8,7 @@ public class Battle {
 	private ArrayList<CombatEntity> playerFaction, enemyFaction; // put this in so there's potential to have multiple entity battles
 	
 	private ArrayList<BattleEndListener> listeners;
+	private ArrayList<BattleTurnListener> turnListeners;
 	
 	// added this so we can keep track of turns, but not sure if that's necessary for saving or not
 	private ArrayList<Turn> turns;
@@ -15,6 +16,7 @@ public class Battle {
 	// This takes two entities because a battle needs two participants minimum in order to work
 	public Battle(CombatEntity a, CombatEntity b) {
 		listeners = new ArrayList<BattleEndListener>();
+		turnListeners = new ArrayList<BattleTurnListener>();
 		
 		playerFaction = new ArrayList<CombatEntity>();
 		playerFaction.add(a);
@@ -30,6 +32,10 @@ public class Battle {
 	// adds an object that wants to know if the battle has ended to our list of things that want to know
 	public void addBattleEndListener(BattleEndListener listener) {
 		listeners.add(listener);
+	}
+	
+	public void addBattleTurnListener(BattleTurnListener listener) {
+		turnListeners.add(listener);
 	}
 	
 	// checks to see if all the combatants in one team are dead
@@ -54,7 +60,11 @@ public class Battle {
 	public void applyTurn(Turn turn) {
 		if(isValidTurn(turn)) {
 			turns.add(turn);
-			executeTurn(turn);
+			int amt = executeTurn(turn);
+			
+			for(BattleTurnListener l : turnListeners) {
+				l.onTurn(turn, amt);
+			}
 		}
 		
 		if(areAllDead(playerFaction)) {
@@ -69,7 +79,7 @@ public class Battle {
 	}
 
 	// performs the actual turn action
-	private void executeTurn(Turn turn) {
+	private int executeTurn(Turn turn) {
 		TurnAction action = turn.getAction();
 		CombatEntity src = turn.getSourceEntity();
 		CombatEntity tgt = turn.getTargetEntity();
@@ -78,31 +88,33 @@ public class Battle {
 		case ATTACK:
 			int damage = src.generateDamage(DamageTypes.PHYSICAL, rng);			
 			tgt.applyDamage(DamageTypes.PHYSICAL, damage);
-			break;
+			return damage;
 			
 		case DEFEND:
 			src.defend();
-			break;
+			return 0;
 			
 		case FIRE:
 			int fDmg = src.generateDamage(DamageTypes.FIRE, rng);
 			tgt.applyDamage(DamageTypes.FIRE, fDmg);
-			break;
+			return fDmg;
 			
 		case FLEE:
 			endBattle(BattleEndCondition.FLEE);
-			break;
+			return 0;
 			
 		case HEAL:
 			int healing = src.generateHealing(rng);
 			tgt.applyHealing(healing);
-			break;
+			return healing;
 			
 		case ICE:
 			int iDmg = src.generateDamage(DamageTypes.ICE, rng);
 			tgt.applyDamage(DamageTypes.ICE, iDmg);
-			break;
+			return iDmg;
 		}	
+		
+		return 0;
 	}
 
 	// checks to see if the turn is a plausible turn

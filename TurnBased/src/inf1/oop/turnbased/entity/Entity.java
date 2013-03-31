@@ -63,7 +63,7 @@ public class Entity {
 		this.y = y;
 		this.name = name;
 		
-		fightingEntity = new CombatEntity(100, new Stats());
+		fightingEntity = new CombatEntity(100, new Stats(), name);
 		//this.weapon = 0;
 		//this.armor = 0;
 		

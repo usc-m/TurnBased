@@ -32,7 +32,7 @@ public class Stats {
 			return DEFENCE_EFFECTIVENESS;
 		
 		default:
-			return 0; // TODO: Make this throw an error
+			return 1; // TODO: Make this throw an error
 		}
 	}
 	
@@ -68,6 +68,6 @@ public class Stats {
 			return attackResists.get(type);
 		}
 		
-		return 0; // since it's possible to be undefended
+		return 1; // since it's possible to be undefended
 	}
 }

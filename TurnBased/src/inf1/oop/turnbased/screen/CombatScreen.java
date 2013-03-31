@@ -4,6 +4,7 @@ import inf1.oop.turnbased.TurnBasedGame;
 import inf1.oop.turnbased.combat.Battle;
 import inf1.oop.turnbased.combat.BattleEndCondition;
 import inf1.oop.turnbased.combat.BattleEndListener;
+import inf1.oop.turnbased.combat.BattleTurnListener;
 import inf1.oop.turnbased.combat.CombatEntity;
 import inf1.oop.turnbased.combat.Turn;
 import inf1.oop.turnbased.combat.TurnAction;
@@ -57,6 +58,56 @@ public class CombatScreen implements Screen {
 				game.setScreen(mapScreen);
 			}
 		});
+		
+		battle.addBattleTurnListener(new BattleTurnListener() {
+			@Override
+			public void onTurn(Turn t, int amount){
+				if(combatLog != null) {
+					String text = "error";
+					switch(t.getAction()) {
+					case ATTACK:
+						text = t.getSourceEntity().getName() 
+								+ " attacks " 
+								+ t.getTargetEntity().getName() 
+								+ " for "
+								+ amount;
+						break;
+						
+					case HEAL:
+						text = t.getSourceEntity().getName() 
+								+ " heals self for "
+								+ amount;
+						break;
+						
+					case FIRE:
+						text = t.getSourceEntity().getName() 
+								+ " casts fire on " 
+								+ t.getTargetEntity().getName() 
+								+ " for "
+								+ amount;
+						break;
+						
+					case ICE:
+						text = t.getSourceEntity().getName() 
+								+ " casts ice on " 
+								+ t.getTargetEntity().getName() 
+								+ " for "
+								+ amount;
+						break;
+						
+					case DEFEND:
+						text = t.getSourceEntity().getName() 
+								+ " defends itself against the next attack!";
+						break;
+						default:
+							text = "error2";
+							break;
+					}
+					
+					combatLog.setText(text);
+				}
+			}
+		});
 	}
 	
 	private void addButton(Table table, String text, InputListener listener) {
@@ -81,7 +132,7 @@ public class CombatScreen implements Screen {
 	public void setCombatText(String combatText) {
 		combatLog.setText(combatText);
 	}
-
+	
 	@Override
 	public void resize(int width, int height) {
 		if(stage == null)
@@ -106,6 +157,7 @@ public class CombatScreen implements Screen {
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				battle.applyTurn(new Turn(player, TurnAction.ATTACK, monster));
+				//combatLog.setText("Player attacks monster for 100 damage");
 			}
 		});
 		
@@ -120,6 +172,7 @@ public class CombatScreen implements Screen {
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				battle.applyTurn(new Turn(player, TurnAction.FIRE, monster));
+				//combatLog.setText("Player casts fire on monster for 100 damage");
 			}
 		});
 		
@@ -134,6 +187,7 @@ public class CombatScreen implements Screen {
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				battle.applyTurn(new Turn(player, TurnAction.ICE, monster));
+				//combatLog.setText("Player casts ice on monster for 100 damage");
 			}
 		});
 		
@@ -148,6 +202,7 @@ public class CombatScreen implements Screen {
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				battle.applyTurn(new Turn(player, TurnAction.HEAL, player));
+				//combatLog.setText("Player heals self for 100 health");
 			}
 		});
 		
@@ -162,6 +217,7 @@ public class CombatScreen implements Screen {
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				battle.applyTurn(new Turn(player, TurnAction.DEFEND, player));
+				//combatLog.setText("Player defends against attack!");
 			}
 		});
 		
@@ -187,7 +243,7 @@ public class CombatScreen implements Screen {
 		
 		LabelStyle ls = new LabelStyle(whiteFont, Color.WHITE);
 		
-		combatLog = new Label("Hello world!", ls);
+		combatLog = new Label("", ls);
 		combatLog.setWidth(width);
 		combatLog.setHeight(40);
 		combatLog.setY(60);
