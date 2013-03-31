@@ -1,5 +1,7 @@
 package inf1.oop.turnbased.screen;
 
+import java.util.Random;
+
 import inf1.oop.turnbased.TurnBasedGame;
 import inf1.oop.turnbased.combat.Battle;
 import inf1.oop.turnbased.combat.BattleEndCondition;
@@ -41,6 +43,7 @@ public class CombatScreen implements Screen {
 	private TextButtonStyle style;
 	private SpriteBatch batch;
 	private Label combatLog;
+	private Random rng;
 	
 	private CombatEntity player, monster;
 	private final MapScreen mapScreen;
@@ -51,11 +54,13 @@ public class CombatScreen implements Screen {
 		this.player = player;
 		this.monster = monster;
 		this.mapScreen = parent;
+		rng = new Random();
 		
 		battle.addBattleEndListener(new BattleEndListener() {
 			@Override
 			public void onBattleEnd(BattleEndCondition cond) {
-				game.setScreen(mapScreen);
+				if(cond == BattleEndCondition.WIN || cond == BattleEndCondition.FLEE)
+					game.setScreen(mapScreen);
 			}
 		});
 		
@@ -133,6 +138,32 @@ public class CombatScreen implements Screen {
 		combatLog.setText(combatText);
 	}
 	
+	private void generateMonsterTurn() {
+		int turnType = rng.nextInt(5); // we don't want to include flee
+		Turn t = null;
+		switch(turnType) {
+		case 0:
+			t = new Turn(monster, TurnAction.ATTACK, player);
+			break;
+		case 1:
+			t = new Turn(monster, TurnAction.FIRE, player);
+			break;
+		case 2:
+			t = new Turn(monster, TurnAction.ICE, player);
+			break;
+		case 3:
+			t = new Turn(monster, TurnAction.DEFEND, monster);
+			break;
+		case 4:
+			t = new Turn(monster, TurnAction.HEAL, monster);
+			break;
+		default:
+			t = new Turn(monster, TurnAction.ATTACK, player);
+			break;
+		}
+		battle.applyTurn(t);
+	}
+	
 	@Override
 	public void resize(int width, int height) {
 		if(stage == null)
@@ -157,6 +188,7 @@ public class CombatScreen implements Screen {
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				battle.applyTurn(new Turn(player, TurnAction.ATTACK, monster));
+				generateMonsterTurn();
 				//combatLog.setText("Player attacks monster for 100 damage");
 			}
 		});
@@ -172,6 +204,7 @@ public class CombatScreen implements Screen {
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				battle.applyTurn(new Turn(player, TurnAction.FIRE, monster));
+				generateMonsterTurn();
 				//combatLog.setText("Player casts fire on monster for 100 damage");
 			}
 		});
@@ -187,6 +220,7 @@ public class CombatScreen implements Screen {
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				battle.applyTurn(new Turn(player, TurnAction.ICE, monster));
+				generateMonsterTurn();
 				//combatLog.setText("Player casts ice on monster for 100 damage");
 			}
 		});
@@ -202,6 +236,7 @@ public class CombatScreen implements Screen {
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				battle.applyTurn(new Turn(player, TurnAction.HEAL, player));
+				generateMonsterTurn();
 				//combatLog.setText("Player heals self for 100 health");
 			}
 		});
@@ -217,6 +252,7 @@ public class CombatScreen implements Screen {
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				battle.applyTurn(new Turn(player, TurnAction.DEFEND, player));
+				generateMonsterTurn();
 				//combatLog.setText("Player defends against attack!");
 			}
 		});
@@ -232,6 +268,7 @@ public class CombatScreen implements Screen {
 			public void touchUp(InputEvent event, float x, float y,
 					int pointer, int button) {
 				battle.applyTurn(new Turn(player, TurnAction.FLEE, player));
+				generateMonsterTurn();
 			}
 		});
 		
@@ -284,7 +321,12 @@ public class CombatScreen implements Screen {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+		atlas.dispose();
+		skin.dispose();
+		font.dispose();
+		whiteFont.dispose();
+		batch.dispose();
+		stage.dispose();
 	}
 
 }

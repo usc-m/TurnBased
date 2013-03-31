@@ -189,7 +189,7 @@ public class MapScreen implements Screen {
 			public void onBattleEnd(BattleEndCondition cond){
 				switch(cond) {
 				case LOSE:
-					// trigger game over
+					game.setScreen(new GameOverScreen(game));
 					break;
 				default: // WIN and FLEE
 					map.setTile((int)mon.x, (int)mon.y, blankTile);
