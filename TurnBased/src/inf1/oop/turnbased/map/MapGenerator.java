@@ -219,6 +219,7 @@ public class MapGenerator {
 			}
 		}
 		
+		
 		//draw edges - TRANSPARANT BACKGROUNDS ARE NOT TRANSPARANT.
 		//Tile edge = new Tile("assets/data/spr_16x16Edge.png");
 		/*for (int i=0; i<3; i++) //horizontally aligned rooms
@@ -359,12 +360,57 @@ public class MapGenerator {
 		map = m;
 	}
 	
+	public void spawnMonsters()
+	{
+		Tile monster = new Tile("assets/data/spr_16x16Wall2.png");
+		Random range = new Random();
+		
+		monster.setPassable(true);
+		for (int x=0; x<map.getWidth(); x++)
+		{
+			for (int y=0; y<map.getHeight(); y++)
+			{
+				if (map.getTile(x, y).isPassable())
+				{
+					if (range.nextInt(10) == 0)
+					{
+						map.setTile(x, y, monster);
+					}
+				}
+			}
+		}
+	}
+	
+	public void spawnItems()
+	{
+		Tile monster = new Tile("assets/data/spr_16x16Edge.png");
+		Random range = new Random();
+		
+		monster.setPassable(true);
+		for (int x=0; x<map.getWidth(); x++)
+		{
+			for (int y=0; y<map.getHeight(); y++)
+			{
+				if (map.getTile(x, y).isPassable())
+				{
+					if (range.nextInt(60) == 0)
+					{
+						map.setTile(x, y, monster);
+					}
+				}
+			}
+		}
+	}	
+	
 	public Map generate(){
 		divMap(3);
 		connect();
 		setPortals();
 		placeMap();
 		setCorridors();
+		spawnMonsters();
+		spawnItems();
+		
 		
 		if(!Pathfinding.search(map, new Vector2(mapStartX, mapStartY), new Vector2(mapEndX, mapEndY))){
 			return this.generate();
