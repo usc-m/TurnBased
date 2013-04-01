@@ -119,4 +119,13 @@ public class CombatEntity {
 		return name;
 	}
 
+	public int getHealth()
+	{
+		return currentHp;
+	}
+	
+	public int getTotalHealth()
+	{
+		return maxHp;
+	}
 }

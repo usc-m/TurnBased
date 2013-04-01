@@ -49,6 +49,7 @@ public class CombatScreen implements Screen {
 	private TextButtonStyle style;
 	private SpriteBatch batch;
 	private Label combatLog;
+	private Label infolog;
 	private Random rng;
 	private Texture background;
 	
@@ -122,6 +123,8 @@ public class CombatScreen implements Screen {
 					int idx = (containsMultiline > -1) ? containsMultiline : 0;
 					text = currText.substring(idx) + '\n' + text;
 					combatLog.setText(text);
+					
+					//infolog.setText("Enemy Health: "+player.getHealth()+"/"+player.getTotalHealth()+" | "+monster.getHealth()+"/"+monster.getTotalHealth()+"Player Health:");
 				}
 			}
 		});
@@ -148,6 +151,10 @@ public class CombatScreen implements Screen {
 	
 	public void setCombatText(String combatText) {
 		combatLog.setText(combatText);
+	}
+	
+	public void setInfoText(String infoText) {
+		infolog.setText(infoText);
 	}
 	
 	private void generateMonsterTurn() {
@@ -305,7 +312,16 @@ public class CombatScreen implements Screen {
 		combatLog.setAlignment(Align.center);
 		combatLog.setFontScale(0.5f);
 		
+		/*infolog = new Label("", ls);
+		infolog.setWidth(width);
+		infolog.setHeight(40);
+		infolog.setY(800);
+		infolog.setAlignment(Align.center);
+		infolog.setFontScale(0.5f);
+		stage.addActor(infolog);*/
+		
 		stage.addActor(combatLog);
+		
 		
 	}
 
