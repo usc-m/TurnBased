@@ -38,7 +38,6 @@ public class MapScreen implements Screen {
 	AssetManager assets;
 	MapGenerator generator;
 	
-	
 	Map map;
 	
 	//VARIABLES, load these from a .json file later on?
@@ -111,6 +110,7 @@ public class MapScreen implements Screen {
 		//stair to next floor
 		stairX = generator.getMapEndX();
 		stairY = generator.getMapEndY();
+		AngryAudio.playMusic(true);
 	}
 	
 	public void steps(){
@@ -213,6 +213,7 @@ public class MapScreen implements Screen {
 		// check if player is at stairs x,y
 		if((player.getX()+8)/16 == stairX && (player.getY()+8)/16 == stairY){
 			spawn();
+			AngryAudio.lvup();
 		}
 		
 		//testing generation
@@ -239,7 +240,7 @@ public class MapScreen implements Screen {
 					
 					game.setScreen(new CombatScreen(game, battle, player.getCombatEntity(), mon, this));
 					
-					AngryAudio.shoot();
+					AngryAudio.sweep();
 				}
 		}
 		
@@ -254,6 +255,13 @@ public class MapScreen implements Screen {
 					//collision
 					System.out.println("COLLIIIIISION with item !!! QEWTQWETIPOUQETOPIUY!OH#@N$FGV&Y#!!#()*%");
 					System.out.println("player.getX()/16 = "+(player.getX()+8)/16+", player.getY()/16 = "+(player.getY()+8)/16+" || monster.x = "+ item.x + ", monster.y = "+item.y); 
+					
+					items.remove(item);
+					Tile square = new Tile("assets/data/spr_16x16Floor.png");
+					square.setPassable(true);
+					map.setTile((int) item.x,(int) item.y, square);
+					
+					//AngryAudio.pickup();
 				}
 		}
 		

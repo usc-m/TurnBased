@@ -1,5 +1,6 @@
 package inf1.oop.turnbased.map;
 
+import inf1.oop.turnbased.AngryAudio;
 import inf1.oop.turnbased.entity.Entity;
 
 import java.util.ArrayList;
@@ -480,6 +481,8 @@ public class MapGenerator {
 		setCorridors();
 		spawnMonsters();
 		spawnItems();
+		
+		
 
 		if (!Pathfinding.search(map, new Vector2(mapStartX, mapStartY),
 				new Vector2(mapEndX, mapEndY))) {

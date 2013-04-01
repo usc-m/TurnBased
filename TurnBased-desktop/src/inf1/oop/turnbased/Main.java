@@ -14,6 +14,7 @@ public class Main {
 		cfg.vSyncEnabled = true;
 	
 		
+		
 		new LwjglApplication(new TurnBasedGame(), cfg);
 		//test
 	}
