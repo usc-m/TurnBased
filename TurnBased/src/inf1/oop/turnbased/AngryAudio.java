@@ -13,7 +13,7 @@ public class AngryAudio {
 	public static Sound lvup = Gdx.audio.newSound(Gdx.files.internal("assets/data/LvUp.ogg"));
 	public static Sound pickup = Gdx.audio.newSound(Gdx.files.internal("assets/data/Pickup.ogg"));
 	public static Sound sweep = Gdx.audio.newSound(Gdx.files.internal("assets/data/Sweep1.ogg"));
-
+	public static Sound hit = Gdx.audio.newSound(Gdx.files.internal("assets/data/Hit.ogg"));
 	
 	public static void playMusic(boolean looping) {
 		song.setLooping(looping);
@@ -35,11 +35,16 @@ public class AngryAudio {
 	public static void sweep() {
 		sweep.play((float) 0.5);
 	}
+	
+	public static void hit() {
+		hit.play((float) 0.5);
+	}	
 
 	public static void dispose() {
 		lvup.dispose();
 		song.dispose();
 		sweep.dispose();
+		hit.dispose();
 	}
 
 }

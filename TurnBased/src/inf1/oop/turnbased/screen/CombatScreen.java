@@ -2,6 +2,7 @@ package inf1.oop.turnbased.screen;
 
 import java.util.Random;
 
+import inf1.oop.turnbased.AngryAudio;
 import inf1.oop.turnbased.TurnBasedGame;
 import inf1.oop.turnbased.combat.Battle;
 import inf1.oop.turnbased.combat.BattleEndCondition;
@@ -82,6 +83,7 @@ public class CombatScreen implements Screen {
 								+ t.getTargetEntity().getName() 
 								+ " for "
 								+ amount;
+						AngryAudio.hit();
 						break;
 						
 					case HEAL:
