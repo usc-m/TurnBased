@@ -256,10 +256,12 @@ public class MapScreen implements Screen {
 					System.out.println("COLLIIIIISION with item !!! QEWTQWETIPOUQETOPIUY!OH#@N$FGV&Y#!!#()*%");
 					System.out.println("player.getX()/16 = "+(player.getX()+8)/16+", player.getY()/16 = "+(player.getY()+8)/16+" || monster.x = "+ item.x + ", monster.y = "+item.y); 
 					
-					items.remove(item);
-					Tile square = new Tile("assets/data/spr_16x16Floor.png");
-					square.setPassable(true);
-					map.setTile((int) item.x,(int) item.y, square);
+					
+					//Tile square = new Tile("assets/data/spr_16x16Floor.png");
+					//square.setPassable(true);
+					//map.setTile((int) item.x,(int) item.y, square);
+					
+					//items.remove(item);
 					
 					//AngryAudio.pickup();
 				}

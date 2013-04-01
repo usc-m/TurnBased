@@ -314,7 +314,7 @@ public class CombatScreen implements Screen {
 		skin.addRegions(atlas);
 		font = new BitmapFont(Gdx.files.internal("assets/data/font.fnt"), false);
 		whiteFont = new BitmapFont(Gdx.files.internal("assets/data/whitefont.fnt"), false);
-		background = new Texture(Gdx.files.internal("assets/data/CombatBG.png"));
+		background = new Texture(Gdx.files.internal("assets/data/CombatBG2.png"));
 		batch = new SpriteBatch();
 	}
 
